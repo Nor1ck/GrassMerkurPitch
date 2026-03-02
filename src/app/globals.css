@@ -32,7 +32,7 @@
     color: var(--color-white);
     font-family: var(--font-display), sans-serif;
     text-transform: uppercase;
-    font-size: clamp(3.1rem, 6vw, 5.625rem);
+    font-size: var(--fs-h1);
     font-weight: 800;
     line-height: 1.1;
   }
@@ -40,7 +40,7 @@
   h2 {
     color: #fff;
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(2.5rem, 4.8vw, 3.75rem);
+    font-size: var(--fs-h2);
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -50,7 +50,7 @@
   h3 {
     color: #fff;
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(1.375rem, 2.4vw, 1.875rem);
+    font-size: var(--fs-h3);
     font-style: normal;
     font-weight: 300;
     line-height: normal;
@@ -60,13 +60,28 @@
   p {
     color: var(--color-white);
     font-family: var(--font-body), sans-serif;
-    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    font-size: var(--fs-body);
     font-weight: 400;
     line-height: 1.7;
   }
 }
 
 :root {
+  --font-scale-desktop: 1;
+  --fs-h1: clamp(calc(3.1rem * var(--font-scale-desktop)), calc(6vw * var(--font-scale-desktop)), calc(5.625rem * var(--font-scale-desktop)));
+  --fs-h2: clamp(calc(2.5rem * var(--font-scale-desktop)), calc(4.8vw * var(--font-scale-desktop)), calc(3.75rem * var(--font-scale-desktop)));
+  --fs-h3: clamp(calc(1.375rem * var(--font-scale-desktop)), calc(2.4vw * var(--font-scale-desktop)), calc(1.875rem * var(--font-scale-desktop)));
+  --fs-body: clamp(calc(1rem * var(--font-scale-desktop)), calc(1.4vw * var(--font-scale-desktop)), calc(1.125rem * var(--font-scale-desktop)));
+  --fs-ui-100: clamp(calc(1rem * var(--font-scale-desktop)), calc(1.05vw * var(--font-scale-desktop)), calc(1.125rem * var(--font-scale-desktop)));
+  --fs-ui-200: clamp(calc(1.125rem * var(--font-scale-desktop)), calc(1.45vw * var(--font-scale-desktop)), calc(1.25rem * var(--font-scale-desktop)));
+  --fs-ui-300: clamp(calc(1.125rem * var(--font-scale-desktop)), calc(1.6vw * var(--font-scale-desktop)), calc(1.375rem * var(--font-scale-desktop)));
+  --fs-ui-350: clamp(calc(1.375rem * var(--font-scale-desktop)), calc(2.4vw * var(--font-scale-desktop)), calc(1.875rem * var(--font-scale-desktop)));
+  --fs-ui-400: clamp(calc(1rem * var(--font-scale-desktop)), calc(1.2vw * var(--font-scale-desktop)), calc(1.25rem * var(--font-scale-desktop)));
+  --fs-ui-500: clamp(calc(1.75rem * var(--font-scale-desktop)), calc(3.2vw * var(--font-scale-desktop)), calc(2.5rem * var(--font-scale-desktop)));
+  --fs-ui-600: clamp(calc(2rem * var(--font-scale-desktop)), calc(3.8vw * var(--font-scale-desktop)), calc(3rem * var(--font-scale-desktop)));
+  --fs-ui-700: clamp(calc(2.5rem * var(--font-scale-desktop)), calc(5vw * var(--font-scale-desktop)), calc(4rem * var(--font-scale-desktop)));
+  --fs-ui-800: clamp(calc(2.6rem * var(--font-scale-desktop)), calc(4.5vw * var(--font-scale-desktop)), calc(4.25rem * var(--font-scale-desktop)));
+  --fs-ui-xs: calc(0.75rem * var(--font-scale-desktop));
   --color-white: #ffffff;
   --color-gold: #dbc18d;
   --color-midnight: #080716;
@@ -74,6 +89,12 @@
   --font-display: "Raleway";
   --font-body: "Raleway";
   --hero-gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --font-scale-desktop: 1.1;
+  }
 }
 
 body {
@@ -135,7 +156,47 @@ body {
 
 @layer utilities {
   .content-wrap {
-    @apply w-full max-w-[1280px] mx-auto;
+    @apply w-full max-w-[1600px] mx-auto;
+  }
+
+  .text-fs-ui-100 {
+    font-size: var(--fs-ui-100);
+  }
+
+  .text-fs-ui-200 {
+    font-size: var(--fs-ui-200);
+  }
+
+  .text-fs-ui-300 {
+    font-size: var(--fs-ui-300);
+  }
+
+  .text-fs-ui-350 {
+    font-size: var(--fs-ui-350);
+  }
+
+  .text-fs-ui-400 {
+    font-size: var(--fs-ui-400);
+  }
+
+  .text-fs-ui-500 {
+    font-size: var(--fs-ui-500);
+  }
+
+  .text-fs-ui-600 {
+    font-size: var(--fs-ui-600);
+  }
+
+  .text-fs-ui-700 {
+    font-size: var(--fs-ui-700);
+  }
+
+  .text-fs-ui-800 {
+    font-size: var(--fs-ui-800);
+  }
+
+  .text-fs-ui-xs {
+    font-size: var(--fs-ui-xs);
   }
 }
 
@@ -216,6 +277,7 @@ body {
 }
 
 @media (min-width: 1024px) {
+
   html.custom-cursor,
   html.custom-cursor * {
     cursor: none !important;

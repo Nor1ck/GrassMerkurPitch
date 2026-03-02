@@ -25,7 +25,7 @@ const works = [
     image: "/assets/sections/works/trust-reports.png"
   },
   {
-    title: "KRITIS Leadership Summit - Ibiza",
+    title: "KRITIS Leadership Summit Ibiza",
     description:
       "Ein invitation-only Summit für KRITIS-Entscheider, CIOs und Geschäftsführer.",
     image: "/assets/sections/works/summit.png"
@@ -68,17 +68,17 @@ export default function WorksSection() {
                   href={item.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[clamp(1.125rem,1.45vw,1.25rem)] font-semibold leading-normal text-white transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)] normal-case hover:underline"
+                  className="text-fs-ui-200 font-semibold leading-normal text-white transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)] normal-case hover:underline"
                 >
                   {item.title}
                 </a>
               ) : (
-                <h3 className="text-[clamp(1.125rem,1.45vw,1.25rem)] font-semibold leading-normal text-white transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)] normal-case">
+                <h3 className="text-fs-ui-200 font-semibold leading-normal text-white transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)] normal-case">
                   {item.title}
                 </h3>
               )}
               {item.description ? (
-                <p className="mt-2 text-[clamp(1rem,1.05vw,1.125rem)] font-normal leading-normal text-[#DBC18D] transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)]">
+                <p className="mt-2 text-fs-ui-100 font-normal leading-normal text-[#DBC18D] transition duration-300 ease-out group-hover:[text-shadow:0_4px_16px_rgba(8,7,22,0.8)]">
                   {item.description}
                 </p>
               ) : null}
@@ -89,3 +89,5 @@ export default function WorksSection() {
     </Section>
   );
 }
+
+

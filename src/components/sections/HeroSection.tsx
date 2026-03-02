@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
@@ -237,7 +237,7 @@ export default function HeroSection() {
         aria-hidden="true"
       >
         <div className="pointer-events-none absolute inset-0 z-10 block bg-[rgba(8,7,22,0.80)] lg:hidden" />
-        <div className="pointer-events-none absolute inset-0 z-10 hidden bg-[linear-gradient(0deg,rgba(8,7,22,0.30)_30%,rgba(8,7,22,0.90)_100%)] lg:block" />
+        <div className="pointer-events-none absolute inset-0 z-10 hidden bg-[linear-gradient(0deg,rgba(8,7,22,0.50)_30%,rgba(8,7,22,0.90)_100%)] lg:block" />
         <div className="marquee h-full w-full grid grid-rows-4 gap-4 z-0 relative scale-[1.5] rotate-[13deg] opacity-[0.7]">
           {rows.map((row, rowIndex) => (
             <div
@@ -276,7 +276,7 @@ export default function HeroSection() {
           <img
             src="/assets/page/hk-logo.svg"
             alt="Hein & Kollegen"
-            className="h-[40px] w-auto"
+            className="h-[50px] w-auto"
           />
         </div>
 
@@ -286,7 +286,7 @@ export default function HeroSection() {
               <h1 className="m-0 text-h1 font-extrabold uppercase text-white">Das ist</h1>
               <HeroTypedTitle />
             </div>
-            <p className="m-0 text-[clamp(1rem,1.2vw,1.25rem)] font-medium text-white text-shadow-[0_3px_10px_rgba(0,0,0,0.8)] [font-family:var(--font-display)]">
+            <p className="m-0 text-fs-ui-300 font-medium text-white text-shadow-[0_3px_10px_rgba(0,0,0,0.8)] [font-family:var(--font-display)]">
               {"Ein System für planbares Wachstum von Grass-Merkur."}
             </p>
           </div>
@@ -295,3 +295,5 @@ export default function HeroSection() {
     </section>
   );
 }
+
+

@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "gsap/SplitText";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,7 +74,7 @@ export function useSplitLines({ scope }: UseSplitLinesOptions) {
       const onResize = () => {
         animations.forEach((t) => t.kill());
         splits.forEach((s) => s.revert());
-        ScrollTrigger.refresh();
+        scheduleScrollTriggerRefresh();
       };
 
       window.addEventListener("resize", onResize);

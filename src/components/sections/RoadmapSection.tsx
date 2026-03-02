@@ -7,7 +7,7 @@ import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
 
 const phaseOneHeadline = ["JA?", "NEIN?", "VIELLEICHT?"];
-const phaseTwoHeadline = ["FALLS JA", "DANN VIELLEICHT SO?"];
+const phaseTwoHeadline = ["FALLS JA,", "DANN VIELLEICHT SO?"];
 const headlineSequenceDelay = 1.25;
 
 const roadmapCards = [
@@ -374,7 +374,7 @@ export default function RoadmapSection() {
           />
         </svg>
 
-        <div className="relative z-10 grid grid-cols-1 gap-x-32 gap-y-14 lg:grid-cols-2">
+        <div className="relative z-10 grid grid-cols-1 gap-x-32 gap-y-32 lg:grid-cols-2">
           {roadmapCards.map((card, index) => (
             <div
               key={card.title}
@@ -394,8 +394,8 @@ export default function RoadmapSection() {
                 className="roadmap-overlay absolute inset-0 transition-opacity duration-300 ease-out bg-[linear-gradient(90deg,#082940_0%,#080716_100%)]"
               />
               <div className="relative z-[1]">
-                <h4 className="text-[clamp(1.125rem,1.45vw,1.25rem)] font-semibold text-white">{card.title}</h4>
-                <ul className="mt-4 list-disc space-y-1 pl-5 text-[clamp(1rem,1.05vw,1.125rem)] font-normal leading-normal text-[#DBC18D]">
+                <h4 className="text-fs-ui-200 font-semibold text-white">{card.title}</h4>
+                <ul className="mt-4 list-disc space-y-1 pl-5 text-fs-ui-100 font-normal leading-normal text-[#DBC18D]">
                   {card.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
@@ -408,3 +408,5 @@ export default function RoadmapSection() {
     </Section>
   );
 }
+
+

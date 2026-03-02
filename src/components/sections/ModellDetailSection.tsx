@@ -512,9 +512,9 @@ export default function ModellDetailSection() {
                 }}
                 className="flex w-full items-center justify-center overflow-hidden bg-[#080716] lg:absolute lg:inset-0 lg:h-[100svh] lg:w-[100vw]"
               >
-                <div className="content-wrap w-full">
+                <div className="content-wrap w-full flex justify-center pb-[43px]">
                   <div
-                    className="relative w-full overflow-hidden rounded-[20px] border border-[#37515F] bg-[#080716] lg:h-[90svh]"
+                    className="relative w-full overflow-hidden rounded-[20px] border border-[#37515F] bg-[#080716] lg:h-[90svh] max-w-[90vw]"
                     style={
                       slide.mediaType === "bg"
                         ? {
@@ -573,7 +573,7 @@ export default function ModellDetailSection() {
                           <div className="flex h-full flex-col justify-center gap-6 py-10 lg:gap-8 lg:py-16">
                             <h3 className="text-left text-balance font-semibold">{slide.title}</h3>
                             <div className="flex flex-col gap-2">
-                              <h4 className="text-left text-[clamp(1.125rem,1.45vw,1.25rem)] text-balance font-semibold">
+                              <h4 className="text-left text-fs-ui-200 text-balance font-semibold">
                                 {slide.subline}
                               </h4>
                               <p className="text-left text-balance text-[#DBC18D]">{slide.body}</p>
@@ -615,3 +615,5 @@ export default function ModellDetailSection() {
     </Section>
   );
 }
+
+

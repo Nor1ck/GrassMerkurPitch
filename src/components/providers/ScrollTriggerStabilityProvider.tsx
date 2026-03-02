@@ -4,6 +4,10 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePageBoot } from "@/components/providers/PageBootProvider";
+import {
+  cancelScheduledScrollTriggerRefresh,
+  scheduleScrollTriggerRefresh
+} from "@/lib/scrollTriggerRefresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,29 +16,19 @@ export default function ScrollTriggerStabilityProvider() {
 
   useEffect(() => {
     if (!isBootReady) return;
-    let rafIdOne: number | null = null;
-    let rafIdTwo: number | null = null;
-    let delayedRefreshId: number | null = null;
 
-    rafIdOne = window.requestAnimationFrame(() => {
-      rafIdTwo = window.requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-        delayedRefreshId = window.setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 160);
-      });
-    });
+    const handleViewportChange = () => {
+      scheduleScrollTriggerRefresh({ delayMs: 120, trailingDelayMs: 120 });
+    };
+
+    scheduleScrollTriggerRefresh({ trailingDelayMs: 160 });
+    window.addEventListener("resize", handleViewportChange);
+    window.addEventListener("orientationchange", handleViewportChange);
 
     return () => {
-      if (rafIdOne !== null) {
-        window.cancelAnimationFrame(rafIdOne);
-      }
-      if (rafIdTwo !== null) {
-        window.cancelAnimationFrame(rafIdTwo);
-      }
-      if (delayedRefreshId !== null) {
-        window.clearTimeout(delayedRefreshId);
-      }
+      window.removeEventListener("resize", handleViewportChange);
+      window.removeEventListener("orientationchange", handleViewportChange);
+      cancelScheduledScrollTriggerRefresh();
     };
   }, [isBootReady]);
 

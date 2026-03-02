@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "@/components/typography/SplitText";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { useSplitLines } from "@/components/typography/useSplitLines";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 const timelineCards = [
   {
@@ -258,7 +259,7 @@ export default function ModellSection() {
           }
           lastViewportWidth = nextViewportWidth;
           lastViewportHeight = nextViewportHeight;
-          ScrollTrigger.refresh();
+          scheduleScrollTriggerRefresh();
         }, 120);
       };
 
@@ -300,7 +301,7 @@ export default function ModellSection() {
       ref={sectionRef}
       className="flex w-full flex-col items-center px-6 py-32 lg:px-16"
     >
-      <div className="content-wrap max-w-[1440px] flex flex-col items-center gap-12 text-center">
+      <div className="max-w-[1440px] flex flex-col items-center gap-12 text-center">
         <div className="flex flex-col items-center">
           <SplitText
             text="Der Weg?"
@@ -336,7 +337,7 @@ export default function ModellSection() {
           </p>
         </div>
       </div>
-      <div className="content-wrap mt-16 w-full max-w-[1440px] lg:mt-48">
+      <div className="w-full max-w-[1440px] mt-16">
         <div ref={viewportRef} className="overflow-visible lg:flex lg:h-[100svh] lg:items-center">
           <div
             ref={trackRef}
@@ -363,23 +364,23 @@ export default function ModellSection() {
                   </div>
                 </div>
                 <div className="relative z-[1] gap-6 flex flex-col">
-                  <h3 className="text-left text-[clamp(1.375rem,2.4vw,1.875rem)] font-medium uppercase text-white">
+                  <h3 className="text-left text-fs-ui-350 font-medium uppercase text-white">
                     {card.title}
                   </h3>
                   <div className="flex flex-col">
-                    <h4 className="mt-1 text-left text-[clamp(1.125rem,1.45vw,1.25rem)] font-medium text-white">
+                    <h4 className="mt-1 text-left text-fs-ui-200 font-medium text-white">
                       {card.subline}
                     </h4>
-                    <p className="text-left text-[clamp(1rem,1.05vw,1.125rem)] font-normal leading-normal text-[#DBC18D]">
+                    <p className="text-left text-fs-ui-100 font-normal leading-normal text-[#DBC18D]">
                       {card.body}
                     </p>
                   </div>
-                  <ul className="mt-1 list-disc space-y-1 pl-5 text-left text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-white">
+                  <ul className="mt-1 list-disc space-y-1 pl-5 text-left text-fs-ui-100 font-normal text-white">
                     {card.list.map((entry) => (
                       <li key={entry}>{entry}</li>
                     ))}
                   </ul>
-                  <p className="text-left text-[clamp(1rem,1.05vw,1.125rem)] font-normal leading-normal text-white">
+                  <p className="text-left text-fs-ui-100 font-normal leading-normal text-white">
                     {card.footer}
                   </p>
                 </div>
@@ -391,3 +392,5 @@ export default function ModellSection() {
     </section>
   );
 }
+
+

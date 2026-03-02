@@ -1,12 +1,13 @@
 ﻿"use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "@/components/typography/SplitText";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -142,6 +143,7 @@ export default function TodayTomorrowSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const hasMountedTabRefreshRef = useRef(false);
 
   useSplitScale({ scope: sectionRef });
 
@@ -178,6 +180,40 @@ export default function TodayTomorrowSection() {
     { scope: sectionRef }
   );
 
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    if (!hasMountedTabRefreshRef.current) {
+      hasMountedTabRefreshRef.current = true;
+      return;
+    }
+
+    scheduleScrollTriggerRefresh({ trailingDelayMs: 140 });
+  }, [activeTab]);
+
+  useEffect(() => {
+    const contentEl = contentRef.current;
+    if (!contentEl || typeof ResizeObserver === "undefined") return;
+
+    let previousHeight = Math.round(contentEl.getBoundingClientRect().height);
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const nextHeight = Math.round(
+        entry?.contentRect.height ?? contentEl.getBoundingClientRect().height
+      );
+      if (Math.abs(nextHeight - previousHeight) < 1) return;
+      previousHeight = nextHeight;
+      scheduleScrollTriggerRefresh({ trailingDelayMs: 120 });
+    });
+
+    observer.observe(contentEl);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const handleTabClick = (key: TabKey) => {
     if (key === activeTab) return;
     setActiveTab(key);
@@ -186,7 +222,7 @@ export default function TodayTomorrowSection() {
   return (
     <Section
       ref={sectionRef}
-      className="flex w-full justify-center bg-[#080716] !px-6 lg:!px-0"
+      className="flex w-full justify-center bg-[#080716] lg:!px-0"
       innerClassName="w-full"
       useContentWrap={false}
     >
@@ -196,7 +232,7 @@ export default function TodayTomorrowSection() {
             text="HEUTE VS. MORGEN"
             split="words"
             as="h2"
-            className="split-scale relative z-[1] text-[clamp(2.6rem,4.5vw,4.25rem)] font-extrabold uppercase tracking-wide text-white [font-family:var(--font-display)]"
+            className="split-scale relative z-[1] text-fs-ui-800 font-extrabold uppercase tracking-wide text-white [font-family:var(--font-display)]"
             childClassName="inline-block"
           />
           <div className="flex flex-col gap-8">
@@ -211,10 +247,10 @@ export default function TodayTomorrowSection() {
                       type="button"
                       onClick={() => handleTabClick(tab.key)}
                       className={
-                        "relative z-10 rounded-full border border-white/30 px-5 py-2 text-xs uppercase tracking-widest transition-colors duration-300 " +
+                        "relative z-10 rounded-full border border-white/50 px-6 py-3 text-fs-ui-100 font-normal uppercase tracking-widest transition-colors duration-300 " +
                         (isActive
-                          ? "bg-[#DBC18D] text-[#080716]"
-                          : "text-white hover:bg-[#DBC18D] hover:text-[#080716]")
+                          ? "bg-[#DBC18D] text-[#080716] !border-[#DBC18D]"
+                          : "text-white hover:bg-[#DBC18D] hover:text-[#080716] hover:!border-[#DBC18D]")
                       }
                     >
                       {tab.label}
@@ -228,7 +264,7 @@ export default function TodayTomorrowSection() {
                 <div
                   key={tab.key}
                   className={
-                    "w-full rounded-[40px] bg-[#080716] p-4 text-left text-white transition-opacity duration-300 lg:p-10 " +
+                    "w-full rounded-[40px] bg-[#080716] p-4 text-left text-white transition-opacity duration-300 lg:px-24 " +
                     (tab.key === activeTab ? "block opacity-100" : "hidden opacity-0")
                   }
                 >
@@ -251,39 +287,39 @@ export default function TodayTomorrowSection() {
                           </div>
                           <div className="flex-1">
                             <div className="flex flex-col gap-3 p-0">
-                              <h3 className="text-[clamp(1.125rem,1.45vw,1.25rem)] font-semibold text-white normal-case [font-family:var(--font-display)]">
+                              <h3 className="text-fs-ui-200 font-semibold text-white normal-case [font-family:var(--font-display)]">
                                 {item.title}
                               </h3>
                               <h4
                                 className={
-                                  "text-[clamp(1rem,1.05vw,1.125rem)] text-[#DBC18D] [font-family:var(--font-display)] " +
+                                  "text-fs-ui-100 text-[#DBC18D] [font-family:var(--font-display)] " +
                                   (tab.key === "morgen" ? "font-bold" : "font-normal")
                                 }
                               >
                                 {item.subtitle}
                               </h4>
                               {tab.key === "morgen" && item.body ? (
-                                <p className="text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-[#DBC18D] [font-family:var(--font-display)]">
+                                <p className="text-fs-ui-100 font-normal text-[#DBC18D] [font-family:var(--font-display)]">
                                   {item.body}
                                 </p>
                               ) : null}
                             </div>
                             {tab.key !== "morgen" && item.body ? (
-                              <p className="mt-5 text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-white [font-family:var(--font-display)]">
+                              <p className="mt-5 text-fs-ui-100 font-normal text-white [font-family:var(--font-display)]">
                                 {item.body}
                               </p>
                             ) : null}
                             {item.list ? (
-                              <ul className="mt-5 w-full list-disc pl-5 text-left text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-white [font-family:var(--font-display)]">
+                              <ul className="mt-5 w-full list-disc pl-5 text-left text-fs-ui-100 font-normal text-white [font-family:var(--font-display)]">
                                 {item.list.map((entry) => (
-                                  <li key={entry} className="text-[clamp(1rem,1.05vw,1.125rem)]">
+                                  <li key={entry} className="text-fs-ui-100">
                                     {entry}
                                   </li>
                                 ))}
                               </ul>
                             ) : null}
                             {item.bodyAfterList ? (
-                              <p className="mt-5 text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-white [font-family:var(--font-display)]">
+                              <p className="mt-5 text-fs-ui-100 font-normal text-white [font-family:var(--font-display)]">
                                 {item.bodyAfterList}
                               </p>
                             ) : null}
@@ -301,3 +337,4 @@ export default function TodayTomorrowSection() {
     </Section>
   );
 }
+

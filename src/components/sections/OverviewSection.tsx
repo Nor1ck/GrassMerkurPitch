@@ -171,7 +171,7 @@ export default function OverviewSection() {
           </h3>
         </div>
 
-        <div ref={countersRef} className="flex justify-between gap-8 w-full mt-16">
+        <div ref={countersRef} className="flex justify-between gap-6 w-full mt-8">
           {counters.map((counter) => (
             <div
               key={counter.value}
@@ -180,11 +180,11 @@ export default function OverviewSection() {
             >
               <div
                 data-counter-value
-                className="text-[clamp(2.5rem,5vw,4rem)] font-extrabold uppercase leading-[1] text-white"
+                className="text-fs-ui-700 font-extrabold uppercase leading-[1] text-white"
               >
                 {counter.value}
               </div>
-              <p data-counter-label className="text-[clamp(1rem,1.05vw,1.125rem)] font-normal text-[#DBC18D]">
+              <p data-counter-label className="text-fs-ui-100 font-normal text-[#DBC18D] text-balance">
                 {counter.label}
               </p>
             </div>
@@ -193,7 +193,7 @@ export default function OverviewSection() {
 
         <div
           ref={badgesRef}
-          className="flex flex-nowrap justify-between gap-6 overflow-visible overflow-x-auto scroll-smooth w-full"
+          className="flex flex-nowrap justify-center gap-12 overflow-visible overflow-x-auto scroll-smooth w-full"
         >
           {badges.map((badge) => (
             <div key={badge.src} className="relative h-32 w-32 flex-none overflow-visible">
@@ -212,3 +212,5 @@ export default function OverviewSection() {
     </Section>
   );
 }
+
+

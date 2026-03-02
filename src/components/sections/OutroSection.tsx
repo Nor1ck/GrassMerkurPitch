@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -6,9 +6,9 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { Section } from "@/components/layout/Section";
 
 const baseStarColor = "#DBC18D";
-const glowStarColor = "#f5e7c8ff";
-const glowTextShadow = "0 0 10px rgba(240,223,184,0.7), 0 0 18px rgba(240,223,184,0.3)";
-const noGlowTextShadow = "0 0 0 rgba(0,0,0,0)";
+const glowStarColor = "#dbc18dff";
+const glowTextShadow = "0 0 8px #dbc18de1, 0 0 15px rgba(240,223,184,0.3)";
+const noGlowTextShadow = "0 0 8px rgba(240,223,184,0), 0 0 15px rgba(240,223,184,0)";
 
 export default function OutroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -155,27 +155,29 @@ export default function OutroSection() {
       const idleTimeline = gsap.timeline({
         paused: true,
         repeat: -1,
-        repeatDelay: 8
+        repeatDelay: 3.5
       });
 
       idleTimeline
         .to(stars, {
           color: glowStarColor,
           textShadow: glowTextShadow,
-          duration: 0.2,
+          duration: 0.6,
           stagger: 0.1,
-          ease: "power1.out"
+          ease: "sine.out",
+          overwrite: "auto"
         })
         .to(
           stars,
           {
             color: baseStarColor,
             textShadow: noGlowTextShadow,
-            duration: 0.2,
-            stagger: 0.1,
-            ease: "power1.out"
+            duration: 0.6,
+            stagger: 0.06,
+            ease: "sine.in",
+            overwrite: "auto"
           },
-          0.04
+          ">+=0.04"
         );
 
       const revealTimeline = gsap.timeline({
@@ -231,7 +233,7 @@ export default function OutroSection() {
     <Section
       ref={sectionRef}
       className="relative mt-48 overflow-hidden bg-[#080716]"
-      innerClassName="relative w-full flex items-center justify-center"
+      innerClassName="relative w-full flex items-center justify-center pt-[43px]"
       centerY
       useContentWrap={false}
     >
@@ -258,7 +260,7 @@ export default function OutroSection() {
           className="h-[64px] w-auto"
         />
         <div
-          className="flex items-center gap-[0.2em] text-[clamp(1.75rem,3.2vw,2.5rem)] text-[#DBC18D]"
+          className="flex items-center gap-[0.2em] text-fs-ui-500 text-[#DBC18D]"
           aria-label="5 stars"
         >
           {Array.from({ length: 5 }).map((_, index) => (

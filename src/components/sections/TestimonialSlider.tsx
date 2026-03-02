@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useRef } from "react";
@@ -191,7 +191,7 @@ export default function TestimonialSlider() {
   return (
     <Section
       ref={sectionRef}
-      className="flex w-full justify-center align-center"
+      className="flex w-full justify-center align-center !py-12"
       innerClassName="w-full"
       useContentWrap={false}
       centerY={true}
@@ -200,15 +200,16 @@ export default function TestimonialSlider() {
         <h2 className="split-lines">KUNDENSTIMMEN</h2>
 
         <div ref={sliderRef} className="relative w-full">
-          <div className="relative mx-auto h-full max-w-5xl">
+          <div className="relative mx-auto h-full w-full max-w-4xl">
             <Swiper
               modules={[Pagination]}
               loop={false}
               speed={700}
+              spaceBetween={80}
               grabCursor={false}
               allowTouchMove={false}
               pagination={{ clickable: false, el: ".testimonial-pagination" }}
-              className="testimonial-swiper h-full"
+              className="testimonial-swiper h-full [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:h-auto"
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
                 activeSlideRef.current = swiper.activeIndex;
@@ -223,15 +224,15 @@ export default function TestimonialSlider() {
               }}
             >
               {testimonials.map((item) => (
-                <SwiperSlide key={item.name} className="flex flex-col">
-                  <div className="flex-grow flex flex-col justify-center align-center">
-                    <p className="text-center text-[clamp(2rem,3.8vw,3rem)] font-light leading-[1.25] text-white">
+                <SwiperSlide key={item.name} className="!flex min-h-[300px] flex-col lg:min-h-[300px]">
+                  <div className="flex grow flex-col items-center justify-center">
+                    <p className="text-center text-fs-ui-600 font-light leading-[1.25] text-white">
                       {item.quote}
                     </p>
                   </div>
 
                   <div className="mt-14 flex flex-row flex-nowrap items-center justify-center gap-8">
-                    <div className="relative h-10 w-10 flex-none">
+                    <div className="relative h-14 w-14 flex-none">
                       <Image
                         src={item.logo}
                         alt={item.name}
@@ -240,11 +241,11 @@ export default function TestimonialSlider() {
                         className="object-contain"
                       />
                     </div>
-                    <p className="text-white">
-                      <strong className="text-[clamp(1.125rem,1.6vw,1.375rem)] font-semibold mr-4">{item.name}</strong>{" "}
-                      <span className="text-[clamp(1.125rem,1.6vw,1.375rem)] font-light">{item.role}</span>
+                    <p className="text-white grow text-start leading-[1.3]">
+                      <strong className="text-fs-ui-300 font-semibold block">{item.name}</strong>{" "}
+                      <span className="text-fs-ui-300 font-light">{item.role}</span>
                     </p>
-                    <div className="flex items-center gap-1 text-[clamp(1.375rem,2.4vw,1.875rem)]">
+                    <div className="flex items-center gap-1 text-fs-ui-300">
                       {Array.from({ length: 5 }).map((_, starIndex) => (
                         <span key={starIndex} className="text-[#DBC18D]">
                           ★
@@ -262,3 +263,5 @@ export default function TestimonialSlider() {
     </Section>
   );
 }
+
+
