@@ -14,12 +14,11 @@ const roadmapCards = [
   {
     title: "1. Bestandsaufnahme",
     items: [
-      "Prozessanalyse in Marketing & Vertrieb",
-      "Marketing Check",
-      "Bewertung bestehender Vertriebslogik",
-      "Identifikation von Potenzialen & Quick-Wins",
+      "Zielgruppen- & Entscheideranalyse",
       "Wettbewerbsanalyse",
-      "Zielgruppen- & Entscheideranalyse"
+      "Marktanalyse",
+      "SWOT-Analyse",
+      "Identifikation von Potenzialen & Quick-Wins"
     ]
   },
   {
