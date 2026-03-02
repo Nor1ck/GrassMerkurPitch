@@ -52,6 +52,7 @@ export default function CaseStudiesSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
       const cards = gsap.utils.toArray<HTMLElement>(
         "[data-case-card]",
@@ -60,7 +61,7 @@ export default function CaseStudiesSection() {
 
       if (!cards.length) return;
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         cards.forEach((card) => {
           const bg = card.querySelector<HTMLElement>("[data-case-bg]");
           const logo = card.querySelector<HTMLElement>("[data-case-logo]");
@@ -140,16 +141,16 @@ export default function CaseStudiesSection() {
   return (
     <Section
       ref={sectionRef}
-      className="flex w-full justify-center mt-16"
+      className="mt-28 flex w-full justify-center lg:mt-44"
       innerClassName="w-full"
       useContentWrap={false}
     >
       <div className="content-wrap flex flex-col items-center gap-16 text-center">
-        <h2 className="split-scale">ERFOLGSGESCHICHTEN</h2>
+        <h2 className="split-scale">ERFOLGS&shy;GESCHICHTEN</h2>
 
         <div
           ref={gridRef}
-          className="grid w-full grid-cols-1 items-stretch gap-12 md:grid-cols-2 lg:grid-cols-3"
+          className="grid w-full grid-cols-1 items-stretch gap-x-16 gap-y-20 md:grid-cols-2 lg:grid-cols-3"
         >
           {cases.map((item) => (
             <div
@@ -164,7 +165,7 @@ export default function CaseStudiesSection() {
                 />
                 <div className="relative z-10 flex flex-col gap-16">
                   <div className="flex flex-col gap-12 px-6 pt-12">
-                    <div data-case-logo className="relative mx-auto h-12 mt-8 w-full">
+                    <div data-case-logo className="relative mx-auto mt-4 h-12 w-full">
                       <Image
                         src={item.logo}
                         alt={item.title}
@@ -208,7 +209,7 @@ export default function CaseStudiesSection() {
                         fill
                         sizes={cardImageSizes}
                         className={
-                          item.mockupClassName ?? "h-auto w-full object-contain scale-[1.1] origin-top"
+                          item.mockupClassName ?? "h-auto w-full object-contain"
                         }
                       />
                     ) : (
@@ -218,7 +219,7 @@ export default function CaseStudiesSection() {
                         width={800}
                         height={600}
                         className={
-                          item.mockupClassName ?? "h-auto w-full object-contain scale-[1.1] origin-top"
+                          item.mockupClassName ?? "h-auto w-full object-contain"
                         }
                       />
                     )}

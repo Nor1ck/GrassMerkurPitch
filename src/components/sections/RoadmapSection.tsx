@@ -112,8 +112,9 @@ export default function RoadmapSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         gsap.set(fallback, { autoAlpha: 1 });
         gsap.set(stage, { display: "none" });
         return;
@@ -176,6 +177,7 @@ export default function RoadmapSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
       const updatePathGeometry = () => {
         if (!gridRef.current || !pathSvgRef.current || !pathRef.current) return;
@@ -219,8 +221,12 @@ export default function RoadmapSection() {
         pathRef.current.setAttribute("d", d);
       };
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         gsap.set(cardsRef.current, { autoAlpha: 1, scale: 1 });
+        overlayRefs.current.forEach((overlay) => {
+          if (!overlay) return;
+          gsap.set(overlay, { opacity: 0 });
+        });
         if (window.matchMedia("(min-width: 1024px)").matches) {
           updatePathGeometry();
           if (pathRef.current) {
@@ -310,10 +316,15 @@ export default function RoadmapSection() {
   );
 
   return (
-    <Section ref={sectionRef} className="w-full" innerClassName="w-full" useContentWrap={false}>
+    <Section
+      ref={sectionRef}
+      className="mt-24 w-full lg:mt-40"
+      innerClassName="w-full"
+      useContentWrap={false}
+    >
       <div
         ref={headerRef}
-        className="content-wrap flex min-h-[100svh] flex-col items-center justify-center gap-3 text-center"
+        className="content-wrap flex min-h-0 flex-col items-center justify-center gap-3 py-16 text-center lg:min-h-[100svh] lg:py-0"
       >
         <h2 className="split-scale">WOLLT IHR MIT UNS GEHEN?</h2>
         <h3 className="relative h-[1.2em] w-full max-w-[34ch] overflow-hidden">
@@ -357,7 +368,7 @@ export default function RoadmapSection() {
         </h3>
       </div>
 
-      <div ref={gridRef} className="content-wrap relative mt-32">
+      <div ref={gridRef} className="content-wrap relative mt-16 lg:mt-32">
         <svg
           ref={pathSvgRef}
           className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 hidden -translate-x-1/2 lg:block"
@@ -382,7 +393,7 @@ export default function RoadmapSection() {
                 cardsRef.current[index] = el;
               }}
               className={
-                "relative z-10 flex flex-col justify-center overflow-hidden rounded-[40px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-16 transition-[border-color] duration-300 ease-out " +
+                "relative z-10 flex h-full flex-col justify-center overflow-hidden rounded-[40px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-8 transition-[border-color] duration-300 ease-out lg:p-16 " +
                 (index % 2 === 1 ? "lg:translate-y-1/2" : "")
               }
             >
@@ -408,5 +419,3 @@ export default function RoadmapSection() {
     </Section>
   );
 }
-
-

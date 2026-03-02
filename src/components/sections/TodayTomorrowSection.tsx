@@ -154,8 +154,9 @@ export default function TodayTomorrowSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         gsap.set([tabsRef.current, contentRef.current], { autoAlpha: 1, y: 0 });
         return;
       }
@@ -337,4 +338,3 @@ export default function TodayTomorrowSection() {
     </Section>
   );
 }
-

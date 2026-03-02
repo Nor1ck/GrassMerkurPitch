@@ -514,7 +514,7 @@ export default function ModellDetailSection() {
               >
                 <div className="content-wrap w-full flex justify-center pb-[43px]">
                   <div
-                    className="relative w-full overflow-hidden rounded-[20px] border border-[#37515F] bg-[#080716] lg:h-[90svh] max-w-[90vw]"
+                    className="relative w-full overflow-hidden rounded-[20px] border border-[#37515F] bg-[#080716] lg:h-[90svh] lg:max-w-[90vw]"
                     style={
                       slide.mediaType === "bg"
                         ? {
@@ -527,7 +527,7 @@ export default function ModellDetailSection() {
                   >
                     {slide.mediaType === "video" ? (
                       <video
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 hidden h-full w-full object-cover lg:block"
                         autoPlay
                         loop
                         muted
@@ -536,66 +536,69 @@ export default function ModellDetailSection() {
                       />
                     ) : null}
                     <div className="h-full w-full">
-                      <div className="grid h-full grid-rows-[minmax(220px,auto)_auto] lg:grid-cols-2 lg:grid-rows-1">
+                      <div className="grid h-full grid-rows-[250px_auto] lg:grid-cols-2 lg:grid-rows-1">
                         <div
                           className={
-                            "relative w-full min-h-[220px] lg:h-full " +
-                            (isBackgroundVideo ? "hidden lg:block" : "")
+                            "relative h-[250px] w-full overflow-hidden lg:h-[90%] " +
+                            (isBackgroundVideo ? "block lg:hidden" : "")
                           }
                         >
-                          {slide.mediaType === "videoLeft" ? (
-                            <div className="absolute inset-x-0 inset-y-6 lg:inset-y-8">
-                              <video
-                                className="h-full w-full object-contain object-left"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                src={slide.mediaSrc}
-                              />
-                            </div>
+                          {slide.mediaType === "videoLeft" || slide.mediaType === "video" ? (
+                            <video
+                              className={
+                                "h-full w-full object-cover " +
+                                (slide.mediaType === "videoLeft"
+                                  ? "lg:object-contain lg:object-left"
+                                  : "")
+                              }
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              src={slide.mediaSrc}
+                            />
                           ) : null}
                           {slide.mediaType === "image" ? (
                             <img
                               src={slide.mediaSrc}
                               alt=""
-                              className="absolute inset-0 h-full w-full object-contain object-left"
+                              className="h-full w-full object-cover lg:object-contain lg:object-left"
                             />
                           ) : null}
                         </div>
                         <div
                           className={
-                            "relative z-[1] row-span-1 flex h-full flex-col justify-center px-6 lg:px-10 " +
-                            (isBackgroundVideo ? "row-span-2 lg:row-span-1 lg:col-start-2 " : "") +
+                            "relative z-[1] row-span-1 flex h-full flex-col justify-center px-4 lg:px-10 " +
+                            (isBackgroundVideo ? "lg:col-start-2 " : "") +
                             panelClass
                           }
                         >
-                          <div className="flex h-full flex-col justify-center gap-6 py-10 lg:gap-8 lg:py-16">
-                            <h3 className="text-left text-balance font-semibold">{slide.title}</h3>
+                          <div className="flex h-full flex-col items-center justify-center gap-5 py-8 text-center lg:items-start lg:gap-8 lg:py-16 lg:text-left">
+                            <h3 className="text-center text-balance font-semibold lg:text-left">{slide.title}</h3>
                             <div className="flex flex-col gap-2">
-                              <h4 className="text-left text-fs-ui-200 text-balance font-semibold">
+                              <h4 className="text-center text-fs-ui-200 text-balance font-semibold lg:text-left">
                                 {slide.subline}
                               </h4>
-                              <p className="text-left text-balance text-[#DBC18D]">{slide.body}</p>
+                              <p className="text-center text-balance text-[#DBC18D] lg:text-left">{slide.body}</p>
                             </div>
                             <div
                               ref={(el) => {
                                 listRefs.current[index] = el;
                               }}
-                              className="slide-list-scroll mt-4 flex max-h-[220px] flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain pr-2 lg:mt-6 lg:max-h-[250px]"
+                              className="slide-list-scroll mt-4 flex max-h-[220px] w-full flex-col gap-2 overflow-y-auto overflow-x-hidden overscroll-contain pr-1 text-left lg:mt-6 lg:max-h-[250px] lg:gap-4 lg:pr-2"
                               onWheel={handleListWheel}
                               onTouchMove={handleListTouchMove}
                             >
                               {slide.list.map((entry) => (
-                                <div key={entry} className="flex flex-nowrap items-center gap-4">
-                                  <span className="flex h-[41px] w-[41px] flex-none items-center justify-center rounded-full border border-[#DBC18D42]">
+                                <div key={entry} className="flex flex-nowrap items-center gap-2 lg:gap-4">
+                                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-[#DBC18D42] lg:h-[41px] lg:w-[41px]">
                                     <img
                                       src="/assets/sections/modell-detail/arrow-icon.svg"
                                       alt=""
                                       className="h-[11px] w-[11px]"
                                     />
                                   </span>
-                                  <p className="min-w-0 flex-shrink flex-grow-0 rounded-[30px] border border-[#DBC18D42] px-4 py-2 text-left text-balance">
+                                  <p className="min-w-0 flex-shrink flex-grow-0 rounded-[30px] border border-[#DBC18D42] px-3 py-1.5 text-left text-balance lg:px-4 lg:py-2">
                                     {entry}
                                   </p>
                                 </div>

@@ -1,13 +1,13 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import { Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useSplitLines } from "@/components/typography/useSplitLines";
@@ -39,6 +39,7 @@ const testimonials = [
 export default function TestimonialSlider() {
   const GESTURE_IDLE_MS = 120;
   const SLIDE_SWITCH_THRESHOLD = 0.35;
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
@@ -49,6 +50,17 @@ export default function TestimonialSlider() {
   const gestureActiveRef = useRef(false);
   const gestureIdleTimerRef = useRef<number | null>(null);
   const lastProgressRef = useRef(0);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const syncMobile = () => setIsMobile(mediaQuery.matches);
+    syncMobile();
+    mediaQuery.addEventListener("change", syncMobile);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncMobile);
+    };
+  }, []);
 
   useSplitLines({ scope: sectionRef });
 
@@ -82,103 +94,121 @@ export default function TestimonialSlider() {
 
   useGSAP(
     () => {
-      if (!sliderRef.current) return;
+      if (!sliderRef.current || !sectionRef.current) return;
 
       gsap.registerPlugin(ScrollTrigger);
 
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const mm = gsap.matchMedia();
 
-      if (prefersReducedMotion) {
+      mm.add("(max-width: 1023px)", () => {
+        ScrollTrigger.getById("testimonial-slider-pin")?.kill();
         gsap.set(sliderRef.current, { opacity: 1, y: 0 });
-        return;
-      }
+        lastProgressRef.current = 0;
+        isSlideTransitioningRef.current = false;
+        gestureActiveRef.current = false;
+        clearStepGestureLock();
+        clearGestureTimer();
+      });
 
-      if (!sectionRef.current || !swiperRef.current) return;
-
-      gsap.fromTo(
-        sliderRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sliderRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none"
-          }
+      mm.add("(min-width: 1024px)", () => {
+        if (prefersReducedMotion) {
+          gsap.set(sliderRef.current, { opacity: 1, y: 0 });
+          return;
         }
-      );
 
-      const slidesCount = testimonials.length;
-      const steps = slidesCount;
-      const holdSteps = 1;
-      const stepLength = 400;
+        const revealTween = gsap.fromTo(
+          sliderRef.current,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sliderRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none"
+            }
+          }
+        );
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: () => `+=${stepLength * (steps + holdSteps)}`,
-        pin: true,
-        scrub: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const delta = progress - lastProgressRef.current;
-          lastProgressRef.current = progress;
+        const slidesCount = testimonials.length;
+        const steps = slidesCount;
+        const holdSteps = 1;
+        const stepLength = 400;
 
-          const direction: 1 | -1 | 0 = delta > 0.0005 ? 1 : delta < -0.0005 ? -1 : 0;
-          if (direction === 0) return;
+        const pinTrigger = ScrollTrigger.create({
+          id: "testimonial-slider-pin",
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${stepLength * (steps + holdSteps)}`,
+          pin: true,
+          scrub: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const delta = progress - lastProgressRef.current;
+            lastProgressRef.current = progress;
 
-          const isNewGesture = markGestureActivity();
-          if (isNewGesture) {
+            const direction: 1 | -1 | 0 = delta > 0.0005 ? 1 : delta < -0.0005 ? -1 : 0;
+            if (direction === 0) return;
+
+            const isNewGesture = markGestureActivity();
+            if (isNewGesture) {
+              clearStepGestureLock();
+            }
+
+            if (isStepGestureLockRef.current && stepLockDirectionRef.current === direction) {
+              return;
+            }
+
+            if (isSlideTransitioningRef.current) return;
+
+            const current = activeSlideRef.current;
+
+            if (direction > 0 && current < steps - 1) {
+              const thresholdProgress = (current + SLIDE_SWITCH_THRESHOLD) / steps;
+              if (progress >= thresholdProgress) {
+                const targetIndex = current + 1;
+                isSlideTransitioningRef.current = true;
+                lockStepForGesture(1);
+                swiperRef.current?.slideTo(targetIndex, 600);
+              }
+            }
+
+            if (direction < 0 && current > 0) {
+              const thresholdProgress = (current - SLIDE_SWITCH_THRESHOLD) / steps;
+              if (progress <= thresholdProgress) {
+                const targetIndex = current - 1;
+                isSlideTransitioningRef.current = true;
+                lockStepForGesture(-1);
+                swiperRef.current?.slideTo(targetIndex, 600);
+              }
+            }
+          },
+          onRefresh: () => {
+            const current = swiperRef.current?.realIndex ?? 0;
+            activeSlideRef.current = current;
+            lastProgressRef.current = 0;
+            isSlideTransitioningRef.current = false;
+            gestureActiveRef.current = false;
             clearStepGestureLock();
+            clearGestureTimer();
           }
+        });
 
-          if (isStepGestureLockRef.current && stepLockDirectionRef.current === direction) {
-            return;
-          }
-
-          if (isSlideTransitioningRef.current) return;
-
-          const current = activeSlideRef.current;
-
-          if (direction > 0 && current < steps - 1) {
-            const thresholdProgress = (current + SLIDE_SWITCH_THRESHOLD) / steps;
-            if (progress >= thresholdProgress) {
-              const targetIndex = current + 1;
-              isSlideTransitioningRef.current = true;
-              lockStepForGesture(1);
-              swiperRef.current?.slideTo(targetIndex, 600);
-            }
-          }
-
-          if (direction < 0 && current > 0) {
-            const thresholdProgress = (current - SLIDE_SWITCH_THRESHOLD) / steps;
-            if (progress <= thresholdProgress) {
-              const targetIndex = current - 1;
-              isSlideTransitioningRef.current = true;
-              lockStepForGesture(-1);
-              swiperRef.current?.slideTo(targetIndex, 600);
-            }
-          }
-        },
-        onRefresh: () => {
-          const current = swiperRef.current?.activeIndex ?? 0;
-          activeSlideRef.current = current;
-          lastProgressRef.current = 0;
-          isSlideTransitioningRef.current = false;
-          gestureActiveRef.current = false;
-          clearStepGestureLock();
-          clearGestureTimer();
-        }
+        return () => {
+          pinTrigger.kill();
+          revealTween.kill();
+        };
       });
 
       return () => {
+        mm.revert();
         clearGestureTimer();
         clearStepGestureLock();
         isSlideTransitioningRef.current = false;
@@ -191,35 +221,44 @@ export default function TestimonialSlider() {
   return (
     <Section
       ref={sectionRef}
-      className="flex w-full justify-center align-center !py-12"
+      className="mt-24 flex w-full justify-center align-center !py-12 lg:mt-40"
       innerClassName="w-full"
       useContentWrap={false}
       centerY={true}
     >
       <div className="content-wrap flex flex-col items-center gap-16 text-center">
-        <h2 className="split-lines">KUNDENSTIMMEN</h2>
+        <h2 className="split-lines break-words hyphens-auto">KUNDEN&shy;STIMMEN</h2>
 
         <div ref={sliderRef} className="relative w-full">
           <div className="relative mx-auto h-full w-full max-w-4xl">
             <Swiper
-              modules={[Pagination]}
-              loop={false}
+              key={isMobile ? "mobile" : "desktop"}
+              modules={[Pagination, Autoplay]}
+              loop={isMobile}
               speed={700}
               spaceBetween={80}
-              grabCursor={false}
-              allowTouchMove={false}
-              pagination={{ clickable: false, el: ".testimonial-pagination" }}
+              grabCursor={isMobile}
+              allowTouchMove={isMobile}
+              autoplay={
+                isMobile
+                  ? {
+                    delay: 5000,
+                    disableOnInteraction: true
+                  }
+                  : false
+              }
+              pagination={{ clickable: isMobile, el: ".testimonial-pagination" }}
               className="testimonial-swiper h-full [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:h-auto"
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
-                activeSlideRef.current = swiper.activeIndex;
+                activeSlideRef.current = swiper.realIndex;
                 isSlideTransitioningRef.current = false;
               }}
               onSlideChange={(swiper) => {
-                activeSlideRef.current = swiper.activeIndex;
+                activeSlideRef.current = swiper.realIndex;
               }}
               onSlideChangeTransitionEnd={(swiper) => {
-                activeSlideRef.current = swiper.activeIndex;
+                activeSlideRef.current = swiper.realIndex;
                 isSlideTransitioningRef.current = false;
               }}
             >
@@ -231,7 +270,7 @@ export default function TestimonialSlider() {
                     </p>
                   </div>
 
-                  <div className="mt-14 flex flex-row flex-nowrap items-center justify-center gap-8">
+                  <div className="mt-10 flex flex-col items-center justify-center gap-4 text-center lg:mt-14 lg:flex-row lg:flex-nowrap lg:gap-8 lg:text-left">
                     <div className="relative h-14 w-14 flex-none">
                       <Image
                         src={item.logo}
@@ -241,7 +280,7 @@ export default function TestimonialSlider() {
                         className="object-contain"
                       />
                     </div>
-                    <p className="text-white grow text-start leading-[1.3]">
+                    <p className="grow text-center leading-[1.3] text-white lg:text-start">
                       <strong className="text-fs-ui-300 font-semibold block">{item.name}</strong>{" "}
                       <span className="text-fs-ui-300 font-light">{item.role}</span>
                     </p>

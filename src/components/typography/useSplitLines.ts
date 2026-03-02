@@ -23,10 +23,11 @@ export function useSplitLines({ scope }: UseSplitLinesOptions) {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
 
       const targets = gsap.utils.toArray<HTMLElement>(".split-lines", scope.current);
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         targets.forEach((target) => {
           gsap.set(target, { opacity: 1 });
         });

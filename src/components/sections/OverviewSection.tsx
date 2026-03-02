@@ -30,6 +30,7 @@ export default function OverviewSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const countersRef = useRef<HTMLDivElement | null>(null);
   const badgesRef = useRef<HTMLDivElement | null>(null);
+  const badgesTrackRef = useRef<HTMLDivElement | null>(null);
 
   useSplitScale({ scope: sectionRef });
   useSplitLines({ scope: sectionRef });
@@ -43,6 +44,21 @@ export default function OverviewSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+      if (isMobile && badgesTrackRef.current) {
+        if (prefersReducedMotion) {
+          gsap.set(badgesTrackRef.current, { xPercent: 0 });
+        } else {
+          gsap.set(badgesTrackRef.current, { xPercent: 0 });
+          gsap.to(badgesTrackRef.current, {
+            xPercent: -50,
+            duration: 30,
+            ease: "none",
+            repeat: -1
+          });
+        }
+      }
 
       const counterEls = gsap.utils.toArray<HTMLElement>(
         "[data-counter]",
@@ -51,7 +67,7 @@ export default function OverviewSection() {
 
       if (!counterEls.length) return;
 
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion || isMobile) {
         counterEls.forEach((counter) => {
           const valueEl = counter.querySelector<HTMLElement>("[data-counter-value]");
           const labelEl = counter.querySelector<HTMLElement>("[data-counter-label]");
@@ -158,25 +174,28 @@ export default function OverviewSection() {
   return (
     <Section
       ref={sectionRef}
-      className="flex w-full justify-center mt-32"
+      className="mt-32 flex w-full justify-center lg:mt-48"
       innerClassName="w-full"
       useContentWrap={false}
       centerY={true}
     >
-      <div className="content-wrap flex flex-col items-center gap-16 text-center">
+      <div className="content-wrap flex flex-col items-center gap-10 text-center lg:gap-16">
         <div className="flex flex-col items-center gap-4">
-          <h2 className="split-scale">HEIN & KOLLEGEN IM ÜBERBLICK</h2>
-          <h3 className="split-lines text-balance">
+          <h2 className="split-scale break-normal hyphens-none">HEIN & KOLLEGEN IM ÜBERBLICK</h2>
+          <h3 className="split-lines text-balance leading-[1.2]">
             WACHSTUM ENTSTEHT, WO RELEVANZ, REICHWEITE UND GLAUBWÜRDIGKEIT ZUSAMMENKOMMEN.
           </h3>
         </div>
 
-        <div ref={countersRef} className="flex justify-between gap-6 w-full mt-8">
+        <div
+          ref={countersRef}
+          className="mt-6 grid w-full grid-cols-1 gap-6 lg:mt-8 lg:grid-cols-4"
+        >
           {counters.map((counter) => (
             <div
               key={counter.value}
               data-counter
-              className="flex min-w-[200px] flex-1 flex-col gap-2 text-center"
+              className="flex min-w-0 flex-1 flex-col gap-2 text-center lg:min-w-[200px]"
             >
               <div
                 data-counter-value
@@ -191,26 +210,38 @@ export default function OverviewSection() {
           ))}
         </div>
 
-        <div
-          ref={badgesRef}
-          className="flex flex-nowrap justify-center gap-12 overflow-visible overflow-x-auto scroll-smooth w-full"
-        >
-          {badges.map((badge) => (
-            <div key={badge.src} className="relative h-32 w-32 flex-none overflow-visible">
-              <Image
-                src={badge.src}
-                alt={badge.name}
-                fill
-                sizes="128px"
-                className="object-contain will-change-transform overflow-visible"
-                data-badge
-              />
+        <div ref={badgesRef} className="w-full">
+          <div className="overview-badges-marquee mt-10 lg:hidden">
+            <div ref={badgesTrackRef} className="overview-badges-track">
+              {[...badges, ...badges].map((badge, index) => (
+                <div key={`${badge.src}-${index}`} className="relative h-24 w-24 flex-none">
+                  <Image
+                    src={badge.src}
+                    alt={badge.name}
+                    fill
+                    sizes="96px"
+                    className="object-contain"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="hidden w-full flex-nowrap justify-center gap-12 overflow-visible overflow-x-auto scroll-smooth lg:flex">
+            {badges.map((badge) => (
+              <div key={badge.src} className="relative h-32 w-32 flex-none overflow-visible">
+                <Image
+                  src={badge.src}
+                  alt={badge.name}
+                  fill
+                  sizes="128px"
+                  className="object-contain will-change-transform overflow-visible"
+                  data-badge
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Section>
   );
 }
-
-

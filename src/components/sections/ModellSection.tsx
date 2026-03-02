@@ -299,9 +299,9 @@ export default function ModellSection() {
   return (
     <section
       ref={sectionRef}
-      className="flex w-full flex-col items-center px-6 py-32 lg:px-16"
+      className="mt-24 flex w-full flex-col items-center px-4 py-20 lg:mt-40 lg:px-16 lg:py-32"
     >
-      <div className="max-w-[1440px] flex flex-col items-center gap-12 text-center">
+      <div className="content-wrap max-w-[1440px] flex flex-col items-center gap-8 text-center lg:gap-12">
         <div className="flex flex-col items-center">
           <SplitText
             text="Der Weg?"
@@ -337,7 +337,7 @@ export default function ModellSection() {
           </p>
         </div>
       </div>
-      <div className="w-full max-w-[1440px] mt-16">
+      <div className="content-wrap mt-10 w-full max-w-[1440px] lg:mt-16">
         <div ref={viewportRef} className="overflow-visible lg:flex lg:h-[100svh] lg:items-center">
           <div
             ref={trackRef}
@@ -348,7 +348,7 @@ export default function ModellSection() {
                 key={card.title}
                 data-timeline-card
                 className={
-                  "relative flex min-h-[260px] w-full flex-none flex-col overflow-hidden rounded-[50px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-6 transition-[border-color] duration-300 ease-out lg:w-[calc((min(1440px,100vw)-3rem)/3)] lg:p-10 " +
+                  "relative flex min-h-[260px] w-full flex-none flex-col overflow-hidden rounded-[50px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-8 transition-[border-color] duration-300 ease-out lg:w-[calc((min(1440px,100vw)-3rem)/3)] lg:p-10 " +
                   (index % 2 === 0 ? "lg:self-start" : "lg:self-end lg:mt-20")
                 }
               >

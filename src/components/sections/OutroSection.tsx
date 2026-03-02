@@ -36,6 +36,34 @@ export default function OutroSection() {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+      const createStarsIdleTimeline = () =>
+        gsap.timeline({
+          paused: true,
+          repeat: -1,
+          repeatDelay: 3.5
+        })
+          .to(stars, {
+            color: glowStarColor,
+            textShadow: glowTextShadow,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "sine.out",
+            overwrite: "auto"
+          })
+          .to(
+            stars,
+            {
+              color: baseStarColor,
+              textShadow: noGlowTextShadow,
+              duration: 0.6,
+              stagger: 0.06,
+              ease: "sine.in",
+              overwrite: "auto"
+            },
+            ">+=0.04"
+          );
 
       if (prefersReducedMotion) {
         gsap.set(logo, { opacity: 1, scale: 1, y: 0 });
@@ -50,6 +78,37 @@ export default function OutroSection() {
         gsap.set(topLeftGlow, { opacity: 0.12, scale: 0.96 });
         gsap.set(bottomRightGlow, { opacity: 0.2, scale: 1.04 });
         return;
+      }
+
+      if (isMobile) {
+        const mobileIdleTimeline = createStarsIdleTimeline();
+
+        gsap.set(logo, { opacity: 1, scale: 1, y: 0 });
+        gsap.set(stars, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          color: baseStarColor,
+          textShadow: noGlowTextShadow
+        });
+        gsap.set(bgGlowLayer, { opacity: 0 });
+        gsap.set(topLeftGlow, { opacity: 0.12, scale: 0.96 });
+        gsap.set(bottomRightGlow, { opacity: 0.2, scale: 1.04 });
+
+        const mobileStarsTrigger = ScrollTrigger.create({
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          onEnter: () => mobileIdleTimeline.play(),
+          onEnterBack: () => mobileIdleTimeline.play(),
+          onLeave: () => mobileIdleTimeline.pause(),
+          onLeaveBack: () => mobileIdleTimeline.pause()
+        });
+
+        return () => {
+          mobileStarsTrigger.kill();
+          mobileIdleTimeline.kill();
+        };
       }
 
       gsap.set(logo, {
@@ -152,33 +211,7 @@ export default function OutroSection() {
         }
       });
 
-      const idleTimeline = gsap.timeline({
-        paused: true,
-        repeat: -1,
-        repeatDelay: 3.5
-      });
-
-      idleTimeline
-        .to(stars, {
-          color: glowStarColor,
-          textShadow: glowTextShadow,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "sine.out",
-          overwrite: "auto"
-        })
-        .to(
-          stars,
-          {
-            color: baseStarColor,
-            textShadow: noGlowTextShadow,
-            duration: 0.6,
-            stagger: 0.06,
-            ease: "sine.in",
-            overwrite: "auto"
-          },
-          ">+=0.04"
-        );
+      const idleTimeline = createStarsIdleTimeline();
 
       const revealTimeline = gsap.timeline({
         scrollTrigger: {
@@ -232,10 +265,9 @@ export default function OutroSection() {
   return (
     <Section
       ref={sectionRef}
-      className="relative mt-48 overflow-hidden bg-[#080716]"
-      innerClassName="relative w-full flex items-center justify-center pt-[43px]"
+      className="relative mt-48 !min-h-[100svh] overflow-hidden bg-[#080716]"
+      innerClassName="relative flex min-h-[100svh] items-center justify-center pt-[43px]"
       centerY
-      useContentWrap={false}
     >
       <div
         ref={bgGlowLayerRef}

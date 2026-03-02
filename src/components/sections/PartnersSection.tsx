@@ -171,7 +171,7 @@ export default function PartnersSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[150svh] overflow-hidden bg-midnight px-6 py-16 sm:px-10 lg:px-16 flex items-center justify-center"
+      className="relative min-h-[100svh] overflow-hidden bg-midnight px-0 py-10 sm:py-12 lg:px-16 lg:py-64 flex items-center justify-center"
     >
       <div className="content-wrap flex h-full items-center justify-center">
         <div ref={rowsRef} className="flex w-full flex-col items-center justify-center gap-16">

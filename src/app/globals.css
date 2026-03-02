@@ -12,6 +12,7 @@
   body {
     margin: 0;
     padding: 0;
+    overflow-x: clip;
   }
 
   img,
@@ -53,7 +54,7 @@
     font-size: var(--fs-h3);
     font-style: normal;
     font-weight: 300;
-    line-height: normal;
+    line-height: 1.2;
     text-transform: uppercase;
   }
 
@@ -102,6 +103,16 @@ body {
   color: var(--color-white);
   font-family: var(--font-body), sans-serif;
   overflow-x: hidden;
+}
+
+@media (max-width: 1023px) {
+  h1,
+  h2,
+  h3,
+  p {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
 }
 
 .boot-lock {
@@ -156,7 +167,7 @@ body {
 
 @layer utilities {
   .content-wrap {
-    @apply w-full max-w-[1600px] mx-auto;
+    @apply w-full max-w-[1600px] mx-auto px-4 lg:px-0;
   }
 
   .text-fs-ui-100 {
@@ -246,12 +257,24 @@ body {
   z-index: 0;
   top: 100%;
   left: 50%;
-  width: 100vw;
+  width: 100dvw;
   height: 600px;
   transform: translate(-50%, 10%);
   background: radial-gradient(circle at 50% 50%, rgba(219, 193, 141, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
   filter: blur(50px);
   pointer-events: none;
+}
+
+.overview-badges-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.overview-badges-track {
+  display: flex;
+  width: max-content;
+  gap: 1.5rem;
+  will-change: transform;
 }
 
 .testimonial-pagination {
