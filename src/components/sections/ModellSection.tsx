@@ -16,7 +16,8 @@ const timelineCards = [
     body: "Bevor Sichtbarkeit entsteht, braucht es Klarheit.",
     list: [
       "Zielgruppenpriorisierung",
-      "Marktpositionierung",
+      "Marktpositionierung & Markenstrategie",
+      "Brand Story, Messaging-System & Design",
       "Angebotsarchitektur",
       "Argumentationslogiken für Entscheider"
     ],
@@ -31,8 +32,8 @@ const timelineCards = [
     list: [
       "Google & KI-gestützte Recherche",
       "LinkedIn & Fachplattformen",
-      "Content mit Substanz",
-      "kontinuierliche Marktpräsenz"
+      "Thought Leadership",
+      "Kontinuierliche Marktpräsenz (on-/offline)"
     ],
     footer: "Nicht für Reichweite. Sondern für Wahrnehmung bei den richtigen Entscheidern."
   },
@@ -42,7 +43,7 @@ const timelineCards = [
     iconSrc: "/assets/sections/modell/process-web.gif",
     body: "Netzwerk bleibt wertvoll. Doch zusätzlich braucht es klare Prozesse.",
     list: [
-      "strukturierter Neukundenprozess",
+      "Strukturierter Neukundenprozess",
       "CRM-Logiken und Lead-Management",
       "Recruiting-Funnels",
       "Automatisierte Übergaben"
@@ -55,10 +56,10 @@ const timelineCards = [
     iconSrc: "/assets/sections/modell/process-flow-web.gif",
     body: "Mehr Nachfrage braucht stabile interne Abläufe.",
     list: [
-      "klare Verantwortlichkeiten",
-      "transparente KPI-Systeme",
-      "saubere Prozessdefinition",
-      "belastbare interne Kommunikation"
+      "Klare Verantwortlichkeiten",
+      "Transparente KPI-Systeme",
+      "Saubere Prozessdefinition",
+      "Belastbare interne Kommunikation"
     ],
     footer: "Struktur verhindert, dass Wachstum Unruhe erzeugt."
   },
@@ -70,8 +71,8 @@ const timelineCards = [
     list: [
       "Delegationsfähigkeit",
       "Entscheidungsstrukturen",
-      "Performance-Controlling",
-      "strategische Weiterentwicklung"
+      "Markterweiterung",
+      "Strategische Weiterentwicklung"
     ],
     footer: "Skalierung bedeutet: Wachstum wird nicht größer – sondern kontrollierter."
   }

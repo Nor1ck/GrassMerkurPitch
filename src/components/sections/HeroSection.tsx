@@ -287,7 +287,7 @@ export default function HeroSection() {
               <HeroTypedTitle />
             </div>
             <p className="m-0 text-[clamp(1rem,1.2vw,1.25rem)] font-medium text-white text-shadow-[0_3px_10px_rgba(0,0,0,0.8)] [font-family:var(--font-display)]">
-              {"Ein System für Wachstum, Umsatz, Mitarbeitergewinnung und Planbarkeit für Grass-Merkur."}
+              {"Ein System für planbares Wachstum von Grass-Merkur."}
             </p>
           </div>
         </div>

@@ -361,7 +361,7 @@ export default function TeamVideo() {
         </div>
 
         <p className="split-lines">
-          Verantwortung braucht Menschen, die sich wahrnehmen. Sonst bleibt sie ein leeres Versprechen.
+          Verantwortung braucht Menschen, die sie wahrnehmen. Sonst bleibt sie ein leeres Versprechen.
           <br />
           Und hier sind die Menschen, die diese Verantwortung übernehmen wollen.
         </p>

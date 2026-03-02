@@ -25,9 +25,9 @@ const works = [
     image: "/assets/sections/works/trust-reports.png"
   },
   {
-    title: "KRITIS Leadership Summit - Ibiza / Mallorca",
+    title: "KRITIS Leadership Summit - Ibiza",
     description:
-      "Ein invitation-only Summit für KRITIS-Entscheider. IT-Leitung und Geschäftsführung gemeinsam. Fokus: Verantwortung, Haftung, Entscheidungslogik.",
+      "Ein invitation-only Summit für KRITIS-Entscheider, CIOs und Geschäftsführer.",
     image: "/assets/sections/works/summit.png"
   }
 ];

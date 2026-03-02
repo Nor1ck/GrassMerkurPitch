@@ -12,73 +12,61 @@ const headlineSequenceDelay = 1.25;
 
 const roadmapCards = [
   {
-    title: "1. Bestandsaufnahme Marketing- & Vertriebssystem",
+    title: "1. Bestandsaufnahme",
     items: [
-      "Analyse bestehender Prozesse",
-      "Bewertung aktueller Sichtbarkeit",
+      "Prozessanalyse in Marketing & Vertrieb",
+      "Marketing Check",
       "Bewertung bestehender Vertriebslogik",
-      "Identifikation struktureller Lücken"
+      "Identifikation von Potenzialen & Quick-Wins",
+      "Wettbewerbsanalyse",
+      "Zielgruppen- & Entscheideranalyse"
     ]
   },
   {
-    title: "2. Positionierungs-Workshop",
+    title: "2. Positionierung",
     items: [
       "Zielgruppenpriorisierung",
       "Differenzierung im Wettbewerbsumfeld",
-      "Kernbotschaften",
-      "Strategische Fokussierung"
+      "Narrativ/Brand Story",
+      "Messaging-Framework",
+      "Kommunikationsarchitektur"
     ]
   },
   {
-    title: "3. Zielgruppen- & Entscheideranalyse",
+    title: "3. Angebots- & Leistungsarchitektur",
     items: [
-      "IT-Leitung vs. Geschäftsführung",
-      "Entscheidungslogiken",
-      "Typische Einwände",
-      "Risikoabwägungen"
+      "Strukturierung der Produktcluster",
+      "Klare Leistungsdefinitionen",
+      "Paketlogiken",
+      "Entry Points für Neukunden"
     ]
   },
   {
     title: "4. Argumentationsarchitektur",
     items: [
-      "Value Proposition",
-      "Vertrauensbeweise",
-      "Nutzenargumentation je Entscheiderebene"
+      "Entscheidungslogiken",
+      "Nutzenargumentation je Entscheiderebene",
+      "Einwand-Vorwegbehandlungen",
+      "Vertrauensbeweise"
     ]
   },
   {
-    title: "5. Angebots- & Leistungsarchitektur",
-    items: [
-      "Strukturierung der Produktcluster",
-      "Klare Leistungsabgrenzung",
-      "Paketlogiken",
-      "Einstiegspunkte für Neukunden"
-    ]
-  },
-  {
-    title: "6. Corporate Identity & Messaging-Rahmen",
+    title: "5. Corporate Identity & Messaging-Framework",
     items: [
       "Schärfung Markenauftritt",
-      "Tonalität",
-      "Claim-/Leitgedankenentwicklung",
-      "Inhaltliche Leitlinien für Website & Content"
+      "Tonalität & Bildsprache",
+      "Zielgruppengerichtete Core Messages",
+      "Visuelle Vorgaben für Design & Branding"
     ]
   },
   {
-    title: "7. Wettbewerbs- & Sichtbarkeitsanalyse",
+    title: "6. Roadmap Markenevolution",
     items: [
-      "Digitale Präsenz Wettbewerber",
-      "SEO- & LLM-Potenziale",
-      "Positionierungslücken im Markt"
-    ]
-  },
-  {
-    title: "8. Operative Wachstums-Roadmap",
-    items: [
-      "Priorisierung der Tools für S2 - Sichtbarkeit",
+      "Priorisierung der Tools für die Module S2 & S3",
       "Definition der ersten Umsetzungsfelder",
       "Budget- & Ressourcenplanung",
-      "12-Monats-Wachstumsfahrplan"
+      "24-Monats-Wachstumsfahrplan",
+      "Auftragsvergabe"
     ]
   }
 ];
