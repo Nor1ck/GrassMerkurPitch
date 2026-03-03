@@ -270,30 +270,32 @@ export default function TestimonialSlider() {
                     </p>
                   </div>
 
-                  <div className="mt-10 flex flex-col items-center justify-center gap-4 text-center lg:mt-14 lg:flex-row lg:flex-nowrap lg:gap-8 lg:text-left">
-                    <div className="relative h-14 w-14 flex-none">
-                      <Image
-                        src={item.logo}
-                        alt={item.name}
-                        fill
-                        sizes="40px"
-                        className="object-contain"
-                      />
-                    </div>
-                    <div className="grow text-center leading-[1.3] text-white lg:text-start">
-                      <div className="inline-flex items-center gap-2 whitespace-nowrap">
-                        <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold">
+                  <div className="mt-10 flex w-full items-center justify-between gap-4 text-white lg:mt-14">
+                    <div className="flex min-w-0 items-center gap-4">
+                      <div className="relative h-14 w-14 flex-none">
+                        <Image
+                          src={item.logo}
+                          alt={item.name}
+                          fill
+                          sizes="56px"
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0 flex items-center gap-3 whitespace-nowrap">
+                        <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold text-white">
                           {item.name}
                         </strong>
-                        <div className="flex items-center gap-1 text-[calc(var(--fs-ui-300)*0.9)]">
-                          {Array.from({ length: 5 }).map((_, starIndex) => (
-                            <span key={starIndex} className="text-[#DBC18D]">
-                              ★
-                            </span>
-                          ))}
-                        </div>
+                        <span className="truncate text-[calc(var(--fs-ui-300)*0.86)] font-light text-white/75">
+                          {item.role}
+                        </span>
                       </div>
-                      <div className="text-[calc(var(--fs-ui-300)*0.9)] font-light">{item.role}</div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-1 text-[calc(var(--fs-ui-300)*0.86)]">
+                      {Array.from({ length: 5 }).map((_, starIndex) => (
+                        <span key={starIndex} className="text-[#DBC18D]">
+                          ★
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </SwiperSlide>
