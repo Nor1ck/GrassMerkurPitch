@@ -7,24 +7,4 @@
 - Network:       http://192.168.178.59:3000
 
 ✓ Starting...
-✓ Ready in 1040ms
- GET / 200 in 853ms (compile: 315ms, render: 538ms)
-✓ Compiled in 959ms
-✓ Compiled in 169ms
- GET / 200 in 429ms (compile: 102ms, render: 327ms)
- GET / 200 in 351ms (compile: 89ms, render: 261ms)
- GET / 200 in 250ms (compile: 6ms, render: 244ms)
- GET / 200 in 230ms (compile: 7ms, render: 223ms)
-✓ Compiled in 96ms
- GET / 200 in 1107ms (compile: 190ms, render: 917ms)
- GET / 200 in 490ms (compile: 14ms, render: 476ms)
- GET / 200 in 491ms (compile: 51ms, render: 440ms)
-✓ Compiled in 173ms
-✓ Compiled in 160ms
-✓ Compiled in 124ms
-✓ Compiled in 83ms
-✓ Compiled in 80ms
- GET / 200 in 578ms (compile: 155ms, render: 424ms)
-✓ Compiled in 283ms
-✓ Compiled in 119ms
-✓ Compiled in 109ms
+✓ Ready in 1120ms

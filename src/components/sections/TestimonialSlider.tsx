@@ -280,16 +280,20 @@ export default function TestimonialSlider() {
                         className="object-contain"
                       />
                     </div>
-                    <p className="grow text-center leading-[1.3] text-white lg:text-start">
-                      <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold block">{item.name}</strong>{" "}
-                      <span className="text-[calc(var(--fs-ui-300)*0.9)] font-light">{item.role}</span>
-                    </p>
-                    <div className="flex items-center gap-1 text-[calc(var(--fs-ui-300)*0.9)]">
-                      {Array.from({ length: 5 }).map((_, starIndex) => (
-                        <span key={starIndex} className="text-[#DBC18D]">
-                          ★
-                        </span>
-                      ))}
+                    <div className="grow text-center leading-[1.3] text-white lg:text-start">
+                      <div className="inline-flex items-center gap-2 whitespace-nowrap">
+                        <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold">
+                          {item.name}
+                        </strong>
+                        <div className="flex items-center gap-1 text-[calc(var(--fs-ui-300)*0.9)]">
+                          {Array.from({ length: 5 }).map((_, starIndex) => (
+                            <span key={starIndex} className="text-[#DBC18D]">
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-[calc(var(--fs-ui-300)*0.9)] font-light">{item.role}</div>
                     </div>
                   </div>
                 </SwiperSlide>

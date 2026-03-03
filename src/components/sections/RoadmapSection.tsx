@@ -7,7 +7,7 @@ import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
 
 const phaseOneHeadline = ["JA?", "NEIN?", "VIELLEICHT?"];
-const phaseTwoHeadline = ["FALLS JA, ", "DANN VIELLEICHT SO?"];
+const phaseTwoHeadline = ["FALLS JA,", "DANN VIELLEICHT SO?"];
 const headlineSequenceDelay = 0.8;
 
 const roadmapCards = [
@@ -361,6 +361,7 @@ export default function RoadmapSection() {
                   }}
                 >
                   {word}
+                  {index < phaseTwoHeadline.length - 1 ? "\u00A0" : ""}
                 </span>
               ))}
             </span>

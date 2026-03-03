@@ -27,7 +27,7 @@ const works = [
   {
     title: "KRITIS Leadership Summit Ibiza",
     description:
-      "Ein invitation-only Summit für KRITIS-Entscheider, CIOs und Geschäftsführer.",
+      "Ein invitation-only Summit für CIOs und Geschäftsführer.",
     image: "/assets/sections/works/summit.png"
   }
 ];
