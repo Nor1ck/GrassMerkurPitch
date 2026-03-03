@@ -281,10 +281,10 @@ export default function TestimonialSlider() {
                       />
                     </div>
                     <p className="grow text-center leading-[1.3] text-white lg:text-start">
-                      <strong className="text-fs-ui-300 font-semibold block">{item.name}</strong>{" "}
-                      <span className="text-fs-ui-300 font-light">{item.role}</span>
+                      <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold block">{item.name}</strong>{" "}
+                      <span className="text-[calc(var(--fs-ui-300)*0.9)] font-light">{item.role}</span>
                     </p>
-                    <div className="flex items-center gap-1 text-fs-ui-300">
+                    <div className="flex items-center gap-1 text-[calc(var(--fs-ui-300)*0.9)]">
                       {Array.from({ length: 5 }).map((_, starIndex) => (
                         <span key={starIndex} className="text-[#DBC18D]">
                           ★
