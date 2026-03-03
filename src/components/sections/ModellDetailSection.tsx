@@ -5,6 +5,7 @@ import type { UIEvent as ReactUIEvent, WheelEvent as ReactWheelEvent } from "rea
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 import { useSplitLines } from "@/components/typography/useSplitLines";
 import { useSplitScale } from "@/components/typography/useSplitScale";
 import { Section } from "@/components/layout/Section";
@@ -14,7 +15,7 @@ const detailSlides = [
     title: "S1 – STRATEGIE & MARKE",
     subline: "Fundament schaffen, bevor Maßnahmen starten.",
     mediaType: "videoLeft",
-    mediaSrc: "/assets/sections/modell-detail/Martin 1X1 - Clean 28RF - kompimiert.mp4",
+    mediaSrc: "/assets/sections/modell-detail/Martin 1x1 - HEMD - clean.mp4",
     body: "Hier entsteht Klarheit. Ohne sie wird Wachstum beliebig und zufällig.",
     list: [
       "Bestandsaufnahme Marketing- & Vertriebssystem",
@@ -138,30 +139,72 @@ export default function ModellDetailSection() {
         const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
         if (!cards.length) return;
 
-        const count = cards.length;
-        const SLIDE_SWITCH_THRESHOLD = 0.30;
-        const SLIDE_SWITCH_BIAS = 1 - SLIDE_SWITCH_THRESHOLD;
-
-        cards.forEach((card, index) => {
-          gsap.set(card, {
-            yPercent: index === 0 ? 0 : 100,
-            autoAlpha: index === 0 ? 1 : 0,
-            zIndex: index + 1
-          });
-        });
-
+        let resizeTimer: number | null = null;
+        let lastViewportWidth = window.innerWidth;
+        let lastViewportHeight = window.innerHeight;
         let trigger: ScrollTrigger | null = null;
+        let queuedStage: number | null = null;
+
+        const count = cards.length;
+        const snapPoints =
+          count > 1 ? Array.from({ length: count }, (_, index) => index / (count - 1)) : [0];
+
         const clampIndex = (value: number) =>
           Math.min(count - 1, Math.max(0, value));
 
-        const animateToIndex = (targetIndex: number) => {
-          if (isAnimatingRef.current) return;
+        const getNearestStage = (progress: number) => {
+          let nearestStage = 0;
+          let nearestDistance = Number.POSITIVE_INFINITY;
+          snapPoints.forEach((point, index) => {
+            const distance = Math.abs(progress - point);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              nearestStage = index;
+            }
+          });
+          return nearestStage;
+        };
+
+        const getNearestSnapPoint = (progress: number) =>
+          snapPoints[getNearestStage(progress)];
+
+        const getPinDistance = () => {
+          const panelHeight = cards[0]?.getBoundingClientRect().height ?? window.innerHeight;
+          const perStepDistance = Math.max(window.innerHeight * 0.95, panelHeight * 0.95);
+          return Math.round(
+            Math.max(window.innerHeight * 1.2, perStepDistance * Math.max(1, count - 1))
+          );
+        };
+
+        const setStageImmediate = (stage: number) => {
+          const clampedStage = clampIndex(stage);
+          queuedStage = null;
+          isAnimatingRef.current = false;
+          activeIndexRef.current = clampedStage;
+
+          cards.forEach((card, index) => {
+            gsap.set(card, {
+              yPercent: index === clampedStage ? 0 : 100,
+              autoAlpha: index === clampedStage ? 1 : 0,
+              zIndex: index + 1
+            });
+          });
+        };
+
+        const continueToQueuedStage = () => {
+          if (isAnimatingRef.current || queuedStage === null) return;
 
           const currentIndex = activeIndexRef.current;
-          if (targetIndex === currentIndex) return;
+          const targetStage = clampIndex(queuedStage);
 
-          const direction = targetIndex > currentIndex ? 1 : -1;
-          const nextCard = cards[targetIndex];
+          if (targetStage === currentIndex) {
+            queuedStage = null;
+            return;
+          }
+
+          const direction = targetStage > currentIndex ? 1 : -1;
+          const nextIndex = clampIndex(currentIndex + direction);
+          const nextCard = cards[nextIndex];
           const currentCard = cards[currentIndex];
 
           isAnimatingRef.current = true;
@@ -169,8 +212,9 @@ export default function ModellDetailSection() {
           const tl = gsap.timeline({
             defaults: { duration: 0.6, ease: "power2.out" },
             onComplete: () => {
-              activeIndexRef.current = targetIndex;
+              activeIndexRef.current = nextIndex;
               isAnimatingRef.current = false;
+              continueToQueuedStage();
             }
           });
 
@@ -182,24 +226,38 @@ export default function ModellDetailSection() {
             gsap.set(nextCard, { yPercent: 0, autoAlpha: 1 });
           }
         };
+
+        const requestStage = (stage: number) => {
+          queuedStage = clampIndex(stage);
+          continueToQueuedStage();
+        };
+
+        setStageImmediate(0);
+
         trigger = ScrollTrigger.create({
           trigger: stackRef.current,
           start: "top top",
-          end: () => `+=${(count - 1) * window.innerHeight}`,
+          end: () => `+=${getPinDistance()}`,
+          snap: {
+            snapTo: (value: number) => {
+              if (isListScrollGuardActive()) return value;
+              return getNearestSnapPoint(value);
+            },
+            directional: true,
+            inertia: false,
+            delay: 0,
+            duration: { min: 0.1, max: 0.2 },
+            ease: "power2.out"
+          },
           pin: true,
           pinSpacing: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const desiredIndex = clampIndex(
-              Math.floor(self.progress * (count - 1) + SLIDE_SWITCH_BIAS)
-            );
             if (isScrollBlocked()) return;
-            const currentIndex = activeIndexRef.current;
-            if (!isAnimatingRef.current && desiredIndex !== currentIndex) {
-              const direction = desiredIndex > currentIndex ? 1 : -1;
-              const nextIndex = clampIndex(currentIndex + direction);
-              animateToIndex(nextIndex);
-            }
+            requestStage(getNearestStage(self.progress));
+          },
+          onRefresh: (self) => {
+            setStageImmediate(getNearestStage(self.progress));
           }
         });
 
@@ -217,11 +275,49 @@ export default function ModellDetailSection() {
 
         window.addEventListener("wheel", handleGuardWheel, { passive: false });
 
+        const handleViewportChange = () => {
+          if (resizeTimer !== null) {
+            window.clearTimeout(resizeTimer);
+          }
+          resizeTimer = window.setTimeout(() => {
+            const nextViewportWidth = window.innerWidth;
+            const nextViewportHeight = window.innerHeight;
+            if (
+              nextViewportWidth === lastViewportWidth &&
+              nextViewportHeight === lastViewportHeight
+            ) {
+              return;
+            }
+            lastViewportWidth = nextViewportWidth;
+            lastViewportHeight = nextViewportHeight;
+            scheduleScrollTriggerRefresh();
+          }, 120);
+        };
+
+        window.addEventListener("resize", handleViewportChange);
+        window.addEventListener("orientationchange", handleViewportChange);
+
         return () => {
+          if (resizeTimer !== null) {
+            window.clearTimeout(resizeTimer);
+          }
           window.removeEventListener("wheel", handleGuardWheel);
+          window.removeEventListener("resize", handleViewportChange);
+          window.removeEventListener("orientationchange", handleViewportChange);
           isAnimatingRef.current = false;
           trigger?.kill();
         };
+      });
+
+      mm.add("(max-width: 1023px)", () => {
+        const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+        cards.forEach((card) => {
+          gsap.set(card, {
+            clearProps: "transform,opacity,visibility,zIndex"
+          });
+        });
+        activeIndexRef.current = 0;
+        isAnimatingRef.current = false;
       });
 
       return () => {
