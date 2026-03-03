@@ -94,6 +94,7 @@ export default function ModellSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const overlayRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useSplitScale({ scope: sectionRef });
@@ -115,7 +116,8 @@ export default function ModellSection() {
 
     const cardWidth = firstCard.getBoundingClientRect().width;
     const gap = 24;
-    const startOffset = (viewportWidth - (3 * cardWidth + 2 * gap)) / 2;
+    const visibleCards = 2.8;
+    const startOffset = (viewportWidth - (visibleCards * cardWidth + 2 * gap)) / 2;
     const endOffset = startOffset - (2 * (cardWidth + gap));
     const cardStep = cardWidth + gap;
     const travel = Math.abs(endOffset - startOffset);
@@ -138,6 +140,25 @@ export default function ModellSection() {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 1024px)", () => {
+      const syncCardHeights = () => {
+        const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+        if (!cards.length) return;
+
+        cards.forEach((card) => {
+          card.style.height = "auto";
+        });
+
+        const maxHeight = Math.ceil(
+          Math.max(...cards.map((card) => card.getBoundingClientRect().height))
+        );
+
+        cards.forEach((card) => {
+          card.style.height = `${maxHeight}px`;
+        });
+      };
+
+      syncCardHeights();
+
       const initialMetrics = getMetrics();
       if (!initialMetrics.cardWidth || !trackRef.current || !viewportRef.current) return;
 
@@ -232,11 +253,13 @@ export default function ModellSection() {
           setHighlight(getHighlightIndexFromStage(getStageFromProgress(lastProgress)));
         },
         onRefreshInit: () => {
+          syncCardHeights();
           metrics = getMetrics();
           setTrackFromProgress(lastProgress);
           setHighlight(getHighlightIndexFromStage(getStageFromProgress(lastProgress)), true);
         },
         onRefresh: (self) => {
+          syncCardHeights();
           metrics = getMetrics();
           lastProgress = self.progress;
           setTrackFromProgress(lastProgress);
@@ -285,6 +308,11 @@ export default function ModellSection() {
         clearProps: "x,transform,willChange"
       });
 
+      const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+      cards.forEach((card) => {
+        card.style.height = "auto";
+      });
+
       overlayRefs.current.forEach((overlay) => {
         if (!overlay) return;
         gsap.set(overlay, { autoAlpha: 0 });
@@ -301,7 +329,7 @@ export default function ModellSection() {
       ref={sectionRef}
       className="mt-24 flex w-full flex-col items-center px-4 py-20 lg:mt-40 lg:px-16 lg:py-32"
     >
-      <div className="content-wrap max-w-[1440px] flex flex-col items-center gap-8 text-center lg:gap-12">
+      <div className="content-wrap max-w-[1280px] flex flex-col items-center gap-8 text-center lg:gap-12">
         <div className="flex flex-col items-center">
           <SplitText
             text="Der Weg?"
@@ -337,7 +365,7 @@ export default function ModellSection() {
           </p>
         </div>
       </div>
-      <div className="content-wrap mt-10 w-full max-w-[1440px] lg:mt-16">
+      <div className="content-wrap mt-10 w-full max-w-[1280px] lg:mt-16">
         <div ref={viewportRef} className="overflow-visible lg:flex lg:h-[100svh] lg:items-center">
           <div
             ref={trackRef}
@@ -347,9 +375,12 @@ export default function ModellSection() {
               <div
                 key={card.title}
                 data-timeline-card
+                ref={(el) => {
+                  cardRefs.current[index] = el;
+                }}
                 className={
-                  "relative flex min-h-[260px] w-full flex-none flex-col overflow-hidden rounded-[50px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-8 transition-[border-color] duration-300 ease-out lg:w-[calc((min(1440px,100vw)-3rem)/3)] lg:p-10 " +
-                  (index % 2 === 0 ? "lg:self-start" : "lg:self-end lg:mt-20")
+                  "relative flex min-h-[260px] w-full flex-none flex-col overflow-hidden rounded-[50px] border border-[#DBC18D]/30 bg-[linear-gradient(90deg,#080716_0%,#080716_100%)] p-8 transition-[border-color] duration-300 ease-out lg:w-[calc((min(1280px,100vw)-3rem)/2.8)] lg:p-10 " +
+                  (index % 2 === 0 ? "lg:self-start" : "lg:self-end lg:mt-28")
                 }
               >
                 <div

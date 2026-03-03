@@ -265,7 +265,7 @@ export default function TestimonialSlider() {
               {testimonials.map((item) => (
                 <SwiperSlide key={item.name} className="!flex min-h-[300px] flex-col lg:min-h-[300px]">
                   <div className="flex grow flex-col items-center justify-center">
-                    <p className="text-center text-fs-ui-600 font-light leading-[1.25] text-white">
+                    <p className="text-center text-[calc(var(--fs-ui-600)*0.88)] font-light leading-[1.25] text-white">
                       {item.quote}
                     </p>
                   </div>
