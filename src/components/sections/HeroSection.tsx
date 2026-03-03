@@ -276,7 +276,7 @@ export default function HeroSection() {
           <img
             src="/assets/page/hk-logo.svg"
             alt="Hein & Kollegen"
-            className="h-[50px] w-auto"
+            className="h-[45px] w-auto"
           />
         </div>
 

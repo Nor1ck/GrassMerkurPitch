@@ -479,7 +479,7 @@ export default function ModellDetailSection() {
       innerClassName="w-full"
       useContentWrap={false}
     >
-      <div className="content-wrap max-w-[1440px] flex flex-col items-center gap-16 text-center">
+      <div className="content-wrap !max-w-[1280px] flex flex-col items-center gap-16 text-center">
         <div className="flex flex-col items-center gap-2">
           <h2 className="split-scale text-balance">DIE 5-S-MODULE IM DETAIL</h2>
           <h3 className="split-scale text-balance font-light">5 MODULE FÜR SICHERES WACHSTUM</h3>
