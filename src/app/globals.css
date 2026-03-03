@@ -170,7 +170,7 @@ body {
 
 @layer utilities {
   .content-wrap {
-    @apply w-full max-w-[1600px] mx-auto px-4 lg:px-0;
+    @apply w-full max-w-[1440px] mx-auto px-4 lg:px-0;
   }
 
   .text-fs-ui-100 {

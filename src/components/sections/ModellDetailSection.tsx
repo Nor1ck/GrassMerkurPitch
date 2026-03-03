@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useRef } from "react";
-import type { TouchEvent as ReactTouchEvent, WheelEvent as ReactWheelEvent } from "react";
+import type { UIEvent as ReactUIEvent, WheelEvent as ReactWheelEvent } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -98,74 +98,25 @@ const detailSlides = [
 ];
 
 export default function ModellDetailSection() {
-  const LOCK_IDLE_MS = 500;
-  const GESTURE_IDLE_MS = 120;
+  const LIST_SCROLL_GUARD_MS = 200;
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const stackRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const listRefs = useRef<Array<HTMLDivElement | null>>([]);
   const activeIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
-  const isListScrollLockRef = useRef(false);
-  const isPostSlideBoundaryLockRef = useRef(false);
-  const postSlideLockDirectionRef = useRef<1 | -1 | 0>(0);
-  const gestureActiveRef = useRef(false);
-  const gestureIdleTimerRef = useRef<number | null>(null);
-  const listScrollUnlockTimerRef = useRef<number | null>(null);
+  const listScrollGuardUntilRef = useRef(0);
 
   useSplitScale({ scope: sectionRef });
   useSplitLines({ scope: sectionRef });
 
-  const clearListScrollLock = () => {
-    if (listScrollUnlockTimerRef.current !== null) {
-      window.clearTimeout(listScrollUnlockTimerRef.current);
-      listScrollUnlockTimerRef.current = null;
-    }
-    isListScrollLockRef.current = false;
+  const markListScrollGuard = () => {
+    listScrollGuardUntilRef.current = Date.now() + LIST_SCROLL_GUARD_MS;
   };
 
-  const refreshListScrollLock = () => {
-    isListScrollLockRef.current = true;
-    if (listScrollUnlockTimerRef.current !== null) {
-      window.clearTimeout(listScrollUnlockTimerRef.current);
-      listScrollUnlockTimerRef.current = null;
-    }
-    listScrollUnlockTimerRef.current = window.setTimeout(() => {
-      isListScrollLockRef.current = false;
-      listScrollUnlockTimerRef.current = null;
-    }, LOCK_IDLE_MS);
-  };
+  const isListScrollGuardActive = () => Date.now() < listScrollGuardUntilRef.current;
 
-  const clearGestureIdleTimer = () => {
-    if (gestureIdleTimerRef.current !== null) {
-      window.clearTimeout(gestureIdleTimerRef.current);
-      gestureIdleTimerRef.current = null;
-    }
-  };
-
-  const markGestureActivity = () => {
-    const isNewGesture = !gestureActiveRef.current;
-    gestureActiveRef.current = true;
-    clearGestureIdleTimer();
-    gestureIdleTimerRef.current = window.setTimeout(() => {
-      gestureActiveRef.current = false;
-      gestureIdleTimerRef.current = null;
-    }, GESTURE_IDLE_MS);
-    return isNewGesture;
-  };
-
-  const activatePostSlideBoundaryLock = (direction: 1 | -1) => {
-    isPostSlideBoundaryLockRef.current = true;
-    postSlideLockDirectionRef.current = direction;
-  };
-
-  const clearPostSlideBoundaryLock = () => {
-    isPostSlideBoundaryLockRef.current = false;
-    postSlideLockDirectionRef.current = 0;
-  };
-
-  const isScrollBlocked = () =>
-    isAnimatingRef.current || isListScrollLockRef.current || isPostSlideBoundaryLockRef.current;
+  const isScrollBlocked = () => isAnimatingRef.current || isListScrollGuardActive();
 
   useGSAP(
     () => {
@@ -200,54 +151,8 @@ export default function ModellDetailSection() {
         });
 
         let trigger: ScrollTrigger | null = null;
-        let touchStartY = 0;
-        let listScrollTween: gsap.core.Tween | null = null;
-        let controlledList: HTMLDivElement | null = null;
-        const scrollState = { value: 0, target: 0 };
         const clampIndex = (value: number) =>
           Math.min(count - 1, Math.max(0, value));
-
-        const getMaxScroll = (listEl: HTMLDivElement) =>
-          Math.max(0, listEl.scrollHeight - listEl.clientHeight);
-
-        const clampScroll = (listEl: HTMLDivElement, value: number) =>
-          Math.min(getMaxScroll(listEl), Math.max(0, value));
-
-        const setControlledList = (listEl: HTMLDivElement) => {
-          if (controlledList === listEl) return;
-          listScrollTween?.kill();
-          controlledList = listEl;
-          scrollState.value = listEl.scrollTop;
-          scrollState.target = listEl.scrollTop;
-        };
-
-        const animateListTo = (listEl: HTMLDivElement, nextTarget: number) => {
-          setControlledList(listEl);
-          scrollState.target = clampScroll(listEl, nextTarget);
-
-          listScrollTween?.kill();
-          listScrollTween = gsap.to(scrollState, {
-            value: scrollState.target,
-            duration: 0.22,
-            ease: "power2.out",
-            overwrite: true,
-            onUpdate: () => {
-              if (!controlledList) return;
-              controlledList.scrollTop = clampScroll(controlledList, scrollState.value);
-            }
-          });
-        };
-
-        const releaseListController = () => {
-          listScrollTween?.kill();
-          listScrollTween = null;
-          controlledList = null;
-        };
-
-        const canScrollList = (listEl: HTMLDivElement | null) => {
-          if (!listEl) return false;
-          return listEl.scrollHeight > listEl.clientHeight + 1;
-        };
 
         const animateToIndex = (targetIndex: number) => {
           if (isAnimatingRef.current) return;
@@ -266,20 +171,6 @@ export default function ModellDetailSection() {
             onComplete: () => {
               activeIndexRef.current = targetIndex;
               isAnimatingRef.current = false;
-              releaseListController();
-              const nextList = listRefs.current[targetIndex];
-              if (!nextList || !canScrollList(nextList)) {
-                activatePostSlideBoundaryLock(direction);
-                return;
-              }
-              const maxScroll = getMaxScroll(nextList);
-              const atTop = nextList.scrollTop <= 0.5;
-              const atBottom = nextList.scrollTop >= maxScroll - 0.5;
-              if ((direction > 0 && atBottom) || (direction < 0 && atTop)) {
-                activatePostSlideBoundaryLock(direction);
-              } else {
-                clearPostSlideBoundaryLock();
-              }
             }
           });
 
@@ -312,134 +203,23 @@ export default function ModellDetailSection() {
           }
         });
 
-        const handleWheel = (event: WheelEvent) => {
+        const handleGuardWheel = (event: WheelEvent) => {
           if (!trigger?.isActive) return;
+          if (!isListScrollGuardActive()) return;
 
-          const listEl = listRefs.current[activeIndexRef.current];
-          const delta = event.deltaY;
-          const direction = delta > 0 ? 1 : delta < 0 ? -1 : 0;
-          const isNewGesture = markGestureActivity();
-
-          if (isPostSlideBoundaryLockRef.current) {
-            const lockDirection = postSlideLockDirectionRef.current;
-            if (!isNewGesture && (direction === 0 || direction === lockDirection)) {
-              event.preventDefault();
-              return;
-            }
-            clearPostSlideBoundaryLock();
-          }
-
-          if (isScrollBlocked()) {
-            event.preventDefault();
-
-            if (!listEl || !canScrollList(listEl)) return;
-
-            const effectiveScroll =
-              controlledList === listEl ? scrollState.target : listEl.scrollTop;
-            const maxScroll = getMaxScroll(listEl);
-            const atTop = effectiveScroll <= 0.5;
-            const atBottom = effectiveScroll >= maxScroll - 0.5;
-
-            if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) {
-              refreshListScrollLock();
-              animateListTo(listEl, effectiveScroll + delta);
-            }
+          const activeList = listRefs.current[activeIndexRef.current];
+          if (activeList && event.target instanceof Node && activeList.contains(event.target)) {
             return;
           }
 
-          if (!listEl || !canScrollList(listEl)) return;
-
-          const effectiveScroll =
-            controlledList === listEl ? scrollState.target : listEl.scrollTop;
-          const maxScroll = getMaxScroll(listEl);
-          const atTop = effectiveScroll <= 0.5;
-          const atBottom = effectiveScroll >= maxScroll - 0.5;
-
-          if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) {
-            event.preventDefault();
-            refreshListScrollLock();
-            animateListTo(listEl, effectiveScroll + delta);
-          }
+          event.preventDefault();
         };
 
-        const handleTouchStart = (event: TouchEvent) => {
-          touchStartY = event.touches[0]?.clientY ?? 0;
-          gestureActiveRef.current = false;
-          clearGestureIdleTimer();
-          clearPostSlideBoundaryLock();
-        };
-
-        const handleTouchMove = (event: TouchEvent) => {
-          if (!trigger?.isActive) return;
-
-          const listEl = listRefs.current[activeIndexRef.current];
-          const currentY = event.touches[0]?.clientY ?? 0;
-          const delta = touchStartY - currentY;
-          const direction = delta > 0 ? 1 : delta < 0 ? -1 : 0;
-          const isNewGesture = markGestureActivity();
-
-          if (isPostSlideBoundaryLockRef.current) {
-            const lockDirection = postSlideLockDirectionRef.current;
-            if (!isNewGesture && (direction === 0 || direction === lockDirection)) {
-              event.preventDefault();
-              touchStartY = currentY;
-              return;
-            }
-            clearPostSlideBoundaryLock();
-          }
-
-          if (isScrollBlocked()) {
-            event.preventDefault();
-
-            if (!listEl || !canScrollList(listEl)) {
-              touchStartY = currentY;
-              return;
-            }
-
-            const effectiveScroll =
-              controlledList === listEl ? scrollState.target : listEl.scrollTop;
-            const maxScroll = getMaxScroll(listEl);
-            const atTop = effectiveScroll <= 0.5;
-            const atBottom = effectiveScroll >= maxScroll - 0.5;
-
-            if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) {
-              refreshListScrollLock();
-              animateListTo(listEl, effectiveScroll + delta);
-            }
-            touchStartY = currentY;
-            return;
-          }
-
-          if (!listEl || !canScrollList(listEl)) return;
-
-          const effectiveScroll =
-            controlledList === listEl ? scrollState.target : listEl.scrollTop;
-          const maxScroll = getMaxScroll(listEl);
-          const atTop = effectiveScroll <= 0.5;
-          const atBottom = effectiveScroll >= maxScroll - 0.5;
-
-          if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) {
-            event.preventDefault();
-            refreshListScrollLock();
-            animateListTo(listEl, effectiveScroll + delta);
-            touchStartY = currentY;
-          }
-        };
-
-        window.addEventListener("wheel", handleWheel, { passive: false });
-        window.addEventListener("touchstart", handleTouchStart, { passive: true });
-        window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        window.addEventListener("wheel", handleGuardWheel, { passive: false });
 
         return () => {
-          window.removeEventListener("wheel", handleWheel);
-          window.removeEventListener("touchstart", handleTouchStart);
-          window.removeEventListener("touchmove", handleTouchMove);
+          window.removeEventListener("wheel", handleGuardWheel);
           isAnimatingRef.current = false;
-          gestureActiveRef.current = false;
-          clearGestureIdleTimer();
-          clearPostSlideBoundaryLock();
-          clearListScrollLock();
-          releaseListController();
           trigger?.kill();
         };
       });
@@ -453,23 +233,17 @@ export default function ModellDetailSection() {
 
   const handleListWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
-    const canScroll = target.scrollHeight > target.clientHeight;
+    const canScroll = target.scrollHeight > target.clientHeight + 1;
     if (!canScroll) return;
-    const atTop = target.scrollTop <= 0;
-    const atBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 1;
-    if ((event.deltaY < 0 && !atTop) || (event.deltaY > 0 && !atBottom)) {
-      refreshListScrollLock();
-      event.stopPropagation();
-    }
+    markListScrollGuard();
+    event.stopPropagation();
   };
 
-  const handleListTouchMove = (event: ReactTouchEvent<HTMLDivElement>) => {
+  const handleListScroll = (event: ReactUIEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
-    const canScroll = target.scrollHeight > target.clientHeight;
-    if (canScroll) {
-      refreshListScrollLock();
-      event.stopPropagation();
-    }
+    const canScroll = target.scrollHeight > target.clientHeight + 1;
+    if (!canScroll) return;
+    markListScrollGuard();
   };
 
   return (
@@ -583,9 +357,9 @@ export default function ModellDetailSection() {
                             panelClass
                           }
                         >
-                          <div className="flex h-full flex-col items-center justify-center gap-5 py-8 text-center lg:items-start lg:gap-8 lg:py-16 lg:text-left">
+                          <div className="flex h-full flex-col items-center justify-center gap-6 py-8 text-center lg:items-start lg:py-16 lg:text-left">
                             <h3 className="text-center text-balance font-semibold lg:text-left">{slide.title}</h3>
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-1">
                               <h4 className="text-center text-fs-ui-200 text-balance font-semibold lg:text-left">
                                 {slide.subline}
                               </h4>
@@ -595,20 +369,20 @@ export default function ModellDetailSection() {
                               ref={(el) => {
                                 listRefs.current[index] = el;
                               }}
-                              className="slide-list-scroll mt-4 flex max-h-[220px] w-full flex-col gap-2 overflow-y-auto overflow-x-hidden overscroll-contain pr-1 text-left lg:mt-6 lg:max-h-[250px] lg:gap-4 lg:pr-2"
+                              className="slide-list-scroll mt-4 flex w-full flex-col gap-2 overflow-y-auto overflow-x-hidden overscroll-contain pr-2 text-left"
                               onWheel={handleListWheel}
-                              onTouchMove={handleListTouchMove}
+                              onScroll={handleListScroll}
                             >
                               {slide.list.map((entry) => (
-                                <div key={entry} className="flex flex-nowrap items-center gap-2 lg:gap-4">
-                                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-[#DBC18D42] lg:h-[41px] lg:w-[41px]">
+                                <div key={entry} className="flex flex-nowrap items-center gap-2">
+                                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-[#DBC18D42]">
                                     <img
                                       src="/assets/sections/modell-detail/arrow-icon.svg"
                                       alt=""
-                                      className="h-[11px] w-[11px]"
+                                      className="h-3 w-3"
                                     />
                                   </span>
-                                  <p className="min-w-0 flex-shrink flex-grow-0 rounded-[30px] border border-[#DBC18D42] px-3 py-1.5 text-left text-balance lg:px-4 lg:py-2">
+                                  <p className="min-w-0 flex-shrink flex-grow-0 rounded-[30px] border border-[#DBC18D42] px-4 text-left text-balance py-2">
                                     {entry}
                                   </p>
                                 </div>

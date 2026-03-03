@@ -381,7 +381,7 @@ export default function TeamVideo() {
       <div className="content-wrap flex flex-col items-center gap-10 text-center lg:gap-16">
         <div className="flex flex-col gap-2">
           <h2 className="split-scale">IHR SEID KEIN PROJEKT FÜR UNS.</h2>
-          <h3 className="split-scale">ES SEID UNSERE NEUE HERZENSANGELEGENHEIT.</h3>
+          <h3 className="split-scale">iHR SEID UNSERE NEUE HERZENSANGELEGENHEIT.</h3>
         </div>
 
         <p className="split-lines">
