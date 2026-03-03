@@ -8,7 +8,7 @@ import { Section } from "@/components/layout/Section";
 
 const phaseOneHeadline = ["JA?", "NEIN?", "VIELLEICHT?"];
 const phaseTwoHeadline = ["FALLS JA,", "DANN VIELLEICHT SO?"];
-const headlineSequenceDelay = 1.25;
+const headlineSequenceDelay = 0.8;
 
 const roadmapCards = [
   {
@@ -327,7 +327,7 @@ export default function RoadmapSection() {
         className="content-wrap flex min-h-0 flex-col items-center justify-center gap-3 py-16 text-center lg:min-h-[100svh] lg:py-0"
       >
         <h2 className="split-scale">WOLLT IHR MIT UNS GEHEN?</h2>
-        <h3 className="relative h-[1.2em] w-full max-w-[34ch] overflow-hidden">
+        <h3 className="relative h-auto w-full max-w-[34ch] overflow-visible lg:h-[1.2em] lg:overflow-hidden">
           <span ref={headlineFallbackRef}>JA? NEIN? VIELLEICHT? FALLS JA, DANN VIELLEICHT SO?</span>
           <span
             ref={headlineStageRef}
@@ -385,7 +385,7 @@ export default function RoadmapSection() {
           />
         </svg>
 
-        <div className="relative z-10 grid grid-cols-1 gap-x-32 gap-y-32 lg:grid-cols-2">
+        <div className="relative z-10 grid grid-cols-1 auto-rows-fr gap-4 lg:grid-cols-2 lg:gap-x-32 lg:gap-y-32">
           {roadmapCards.map((card, index) => (
             <div
               key={card.title}

@@ -181,7 +181,7 @@ export default function OverviewSection() {
     >
       <div className="content-wrap flex flex-col items-center gap-10 text-center lg:gap-16">
         <div className="flex flex-col items-center gap-4">
-          <h2 className="split-scale break-normal hyphens-none">HEIN & KOLLEGEN IM ÜBERBLICK</h2>
+          <h2 className="split-scale break-normal !hyphens-none">HEIN & KOLLEGEN IM ÜBERBLICK</h2>
           <h3 className="split-lines text-balance leading-[1.2]">
             WACHSTUM ENTSTEHT, WO RELEVANZ, REICHWEITE UND GLAUBWÜRDIGKEIT ZUSAMMENKOMMEN.
           </h3>
