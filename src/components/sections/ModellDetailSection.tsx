@@ -16,15 +16,13 @@ const detailSlides = [
     subline: "Fundament schaffen, bevor Maßnahmen starten.",
     mediaType: "videoLeft",
     mediaSrc: "/assets/sections/modell-detail/Martin 1x1 - HEMD - clean.mp4",
-    body: "Hier entsteht Klarheit. Ohne sie wird Wachstum beliebig und zufällig.",
+    body: "Hier entsteht Klarheit. Ohne sie wird Wachstum zufällig.",
     list: [
-      "Bestandsaufnahme Marketing- & Vertriebssystem",
-      "Positionierungs-Workshop",
-      "Zielgruppen- & Entscheideranalyse",
-      "Argumentationslogik für Entscheider",
-      "Angebots- & Leistungsarchitektur",
-      "Corporate Identity & Messaging",
-      "Wettbewerbsanalyse"
+      "Markt- & Wettbewerbsanalyse",
+      "Zielgruppenanalyse",
+      "SWOT & Potenziale",
+      "Positionierung & Angebotsarchitektur",
+      "Brand Story & Messaging"
     ]
   },
   {
@@ -32,37 +30,27 @@ const detailSlides = [
     subline: "Relevanz in Entscheidungsphasen aufbauen.",
     mediaType: "videoLeft",
     mediaSrc: "/assets/sections/modell-detail/video-mock-up 1_1.mp4",
-    body: "Nicht Reichweite ist das Ziel – sondern Wahrnehmung bei den richtigen Entscheidern.",
+    body: "Ziel ist die Wahrnehmung bei den relevanten Entscheidern.",
     list: [
-      "SEO & GEO (inkl. Nischen wie „Lift & Shift“)",
-      "Sichtbarkeit in KI-Systemen & LLMs",
-      "LinkedIn-Strategie & Reputationsmarketing über Thought Leadership Contents",
-      "Blogmarketing, White Papers & Fachartikel",
-      "Videomarketing (Erklärung komplexer Leistungen)",
-      "Podcasting",
-      "Event Marketing",
-      "Empfehlungsmarketing",
-      "Website-Relaunch, Landing Pages & Conversion-Optimierung",
-      "Reichweitenkampagnen",
-      "Retargeting & Sichtbarkeits-Logiken",
-      "Fotoshootings"
+      "Sichtbarkeit in Google und LLMs",
+      "Social Media & Video Marketing",
+      "Reputationsmarketing & Thought Leadership",
+      "Websites, Landing Pages, Retargeting",
+      "Event Marketing, Podcasting, Newsletter"
     ]
   },
   {
     title: "S3 – SYSTEME",
-    subline: "Neukunden- und Recruitingprozesse reproduzierbar machen.",
+    subline: "Kundengewinnung & Recruiting skalieren.",
     mediaType: "videoLeft",
     mediaSrc: "/assets/sections/modell-detail/video-mock-up 2.mp4",
-    body: "Wachstum darf nicht vom Zufall oder einzelnen Personen abhängen.",
+    body: "Wachstum wird systematisch.",
     list: [
-      "Strukturierter Neukunden-Funnel",
-      "Event-Formate mit strukturiertem Follow-up",
-      "LinkedIn-Automations & Account-Based-Marketing",
-      "CRM-Setup & Lead-Management",
-      "Newsletter-Marketing",
-      "KPI-Tracking & Performance-Dashboards",
-      "Social Recruiting",
-      "Recruiting-Funnels & Bewerber-Landingpages"
+      "Recruiting Funnels",
+      "Talent Management Systems",
+      "KI & Automations",
+      "CRM-Setups & Lead Management",
+      "Events mit strukturierten Follow-ups"
     ]
   },
   {
@@ -71,29 +59,28 @@ const detailSlides = [
     mediaType: "video",
     mediaSrc: "/assets/sections/modell-detail/video-background-struktur.mp4",
     panelStyle: "overlay",
-    body: "Mehr Nachfrage bedeutet mehr Komplexität. Struktur verhindert Unruhe.",
+    body: "Struktur verhindert Unruhe im Wachstum.",
     list: [
-      "Prozessanalyse & Optimierung",
-      "Rollen- und Verantwortlichkeitsdefinition",
-      "interne KPI-Systeme",
-      "Automatisierung von Standardprozessen",
-      "Schnittstellenoptimierung zwischen Marketing & Vertrieb"
+      "Prozessoptimierung",
+      "Führungssystem mit Rollen & Verantwortlichkeiten",
+      "Organisationsentwicklung",
+      "Systemisches Coaching",
+      "KPI-Systeme"
     ]
   },
   {
     title: "S5 – SKALIERUNG",
-    subline: "Führung und Organisation auf die nächste Stufe bringen.",
+    subline: "Wachstum skalieren, Potenziale entwickeln.",
     mediaType: "video",
     mediaSrc: "/assets/sections/modell-detail/video-background-skalierung.mp4",
     panelStyle: "overlay",
-    body: "Wachstum endet nicht bei Leads. Es endet in der Führung.",
+    body: "Skalierung beginnt in der Führung.",
     list: [
-      "Führungsworkshops",
-      "Vertriebstrainings",
-      "Strategische Roadmaps",
-      "Skalierungsplanung für neue Geschäftsfelder",
-      "Organisationsentwicklung",
-      "Management-Sparring"
+      "Scale-up Workshops",
+      "Geschäftsfeldentwicklung",
+      "Sales Trainings",
+      "Management-Sparring",
+      "Strategy Summits"
     ]
   }
 ];

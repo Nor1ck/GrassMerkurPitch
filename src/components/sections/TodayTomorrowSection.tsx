@@ -31,24 +31,25 @@ type Tab = {
 const todayItems: Item[] = [
   {
     id: "today-1",
-    title: "Drei strategisch verzahnte Geschäftsfelder",
-    subtitle: "Co-Location. Managed Services. Consulting.",
+    title: "Viel Bewegung im Unternehmen – aber noch kein echtes Wachstumssystem.",
+    subtitle:
+      "Viele Initiativen laufen parallel. Doch Strategie, Marketing, Vertrieb und Organisation greifen noch nicht vollständig ineinander.",
     body:
-      "Drei klar definierte Leistungscluster, die Infrastruktur, Betrieb und Beratung miteinander verbinden und so ganzheitliche Verantwortung ermöglichen."
+      "Viele Unternehmen investieren viel Aufwand in Marketing & Vertrieb. Neue Ideen entstehen, Projekte werden gestartet, Maßnahmen umgesetzt. Doch häufig entwickeln sich diese Aktivitäten nebeneinander und nicht als ein gemeinsames System. Strategie, Marketing, Vertrieb und Organisation verfolgen ähnliche Ziele, aber nicht immer dieselbe Richtung. So entsteht viel Bewegung im Unternehmen – aber nicht immer die Wirkung, die eigentlich möglich wäre."
   },
   {
     id: "today-2",
-    title: "Netzwerkbasierte Kundengewinnung auf Entscheider-Ebene",
-    subtitle: "Kein Zufall. Sondern Vertrauen, das sich bewährt hat.",
+    title: "Kundengewinnung über Netzwerk und Empfehlungen",
+    subtitle: "Vertrauen wirkt – aber es ist schwer skalierbar.",
     body:
-      "Neue Kunden entstehen über ein über Jahre gewachsenes Netzwerk, persönliche Beziehungen und Empfehlungen zufriedener Bestandskunden."
+      "Viele Anfragen entstehen heute über persönliche Kontakte, Empfehlungen oder bestehende Beziehungen. Das ist ein starkes Fundament. Gleichzeitig fehlt oft eine zusätzliche, systematische Sichtbarkeit im Markt. Neue Nachfrage entsteht deshalb nicht planbar – sondern vor allem dann, wenn jemand aktiv auf das Unternehmen zukommt."
   },
   {
     id: "today-3",
-    title: "Hoher Vertrauensfaktor bei langjährigen Bestandskunden",
-    subtitle: "Grass-Merkur entwickelt keine Kunden, sondern Vertrauen.",
+    title: "Starke Bindung bei bestehenden Kunden",
+    subtitle: "Langfristige Kundenbeziehungen sind ein echter Wettbewerbsvorteil.",
     body:
-      "Kunden geben kritische Systeme, sensible Daten und unternehmenskritische Prozesse in die Hände von Grass-Merkur. Das ist keine Kunden-Lieferanten-Beziehung. Das ist Vertrauen auf Infrastruktur-Ebene."
+      "Bestehende Kunden vertrauen Dir und Deinem Unternehmen, oft seit vielen Jahren. Und gleichzeitig wissen potenzielle Neukunden oft nicht, warum sie genau Deine Produkte oder Leistungen kaufen sollen. Die langjährigen Kunden zeigen, dass es dafür gute Argumente und genau hier liegt Dein Potenzial. Wenn Vertrauen strategisch genutzt wird, kann daraus planbares Wachstum entstehen – über eine klare Positionierung, eine prägnante Markenstrategie und Reputationsmarketing."
   }
 ];
 
@@ -63,7 +64,7 @@ const potentialsItems: Item[] = [
   {
     id: "pot-2",
     title: "Strategische Positionierung statt reiner Infrastruktur-Wahrnehmung",
-    subtitle: "Grass-Merkur könnte klarer als strategischer IT-Partner auftreten.",
+    subtitle: "Dein Unternehmen könnte klarer als strategischer IT-Partner auftreten.",
     body:
       "Mit Infrastruktur, Managed Services und Consulting aus einer Hand. Nicht nur als Betreiber, sondern noch mehr als Verantwortungspartner."
   },
@@ -83,9 +84,11 @@ const tomorrowItems: Item[] = [
     subtitle: "Grass-Merkur ist bei Entscheidern präsent. Genau dort, wo Entscheider recherchieren, vergleichen und absichern.",
     body: "",
     list: [
-      "Google",
-      "in KI-gestützten Recherche-Systemen",
-      "auf LinkedIn und relevanten Fachplattformen"
+      "In Google, KIs wie ChatGPT oder Gemini, und weiteren Suchmaschinen",
+      "Auf Social Media, wo Deine Kunden und Bewerber unterwegs sind",
+      "In relevanten Netzwerken",
+      "Auf Events, Messen und Kongressen",
+      "In Podcasts, Youtube usw."
     ],
     bodyAfterList:
       "Nicht personenabhängig, nicht zufallsgetrieben, sondern mit klaren Vertriebssystemen, messbarer Sichtbarkeit und kontinuierlichen qualifizierten Anfragen. Wachstum wird planbar."
@@ -96,9 +99,9 @@ const tomorrowItems: Item[] = [
     subtitle: "Der Markt nimmt Grass-Merkur als strategischen Partner wahr. Als vertrauenswürdigen Partner für",
     body: "",
     list: [
-      "Hybrid-IT-Architekturen",
-      "sichere Cloud-Integration",
-      "IT-Transformation mit echter Verantwortung"
+      "Klare Leistungsrahmen",
+      "Relevante Nutzerversprechen",
+      "Nachhaltige Ergebnisse"
     ],
     bodyAfterList:
       "Infrastruktur, Managed Services und Consulting werden als integrierte Kompetenz verstanden – nicht als einzelne Leistungen."
@@ -106,17 +109,15 @@ const tomorrowItems: Item[] = [
   {
     id: "mor-3",
     title: "Kompetenzzentrum für sichere, regulatorisch belastbare IT",
-    subtitle:
-      "Grass-Merkur wird Orientierungspunkt für KRITIS- und NIS2-Anforderungen. Grass-Merkur wird der Ansprechpartner für:",
+    subtitle: "Dein Unternehmen wird zur ersten Wahl, wenn nachhaltige Werte beim Kunden entscheidend sind:",
     body: "",
     list: [
-      "regulatorische Sicherheit",
-      "Compliance",
-      "belastbare Infrastruktur",
-      "langfristige Stabilität"
+      "Qualität",
+      "Verantwortung",
+      "Verlässlichkeit"
     ],
     bodyAfterList:
-      "Damit ist Grass-Merkur nicht der nächste Anbieter, sondern die Referenz."
+      "So entsteht eine Positionierung, die nicht austauschbar ist."
   }
 ];
 

@@ -270,27 +270,23 @@ export default function TestimonialSlider() {
                     </p>
                   </div>
 
-                  <div className="mt-10 flex w-full items-center justify-between gap-4 text-white lg:mt-14">
-                    <div className="flex min-w-0 items-center gap-4">
-                      <div className="relative h-14 w-14 flex-none">
-                        <Image
-                          src={item.logo}
-                          alt={item.name}
-                          fill
-                          sizes="56px"
-                          className="object-contain"
-                        />
-                      </div>
-                      <div className="min-w-0 flex items-center gap-3 whitespace-nowrap">
-                        <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold text-white">
-                          {item.name}
-                        </strong>
-                        <span className="truncate text-[calc(var(--fs-ui-300)*0.86)] font-light text-white/75">
-                          {item.role}
-                        </span>
-                      </div>
+                  <div className="mt-10 flex flex-col items-center justify-center gap-2 text-center text-white lg:mt-14">
+                    <div className="relative h-14 w-14 flex-none">
+                      <Image
+                        src={item.logo}
+                        alt={item.name}
+                        fill
+                        sizes="56px"
+                        className="object-contain"
+                      />
                     </div>
-                    <div className="flex shrink-0 items-center gap-1 text-[calc(var(--fs-ui-300)*0.86)]">
+                    <strong className="text-[calc(var(--fs-ui-300)*0.9)] font-semibold text-white">
+                      {item.name}
+                    </strong>
+                    <span className="text-[calc(var(--fs-ui-300)*0.86)] font-light text-white/75">
+                      {item.role}
+                    </span>
+                    <div className="mt-1 flex items-center justify-center gap-1 text-[calc(var(--fs-ui-300)*0.86)]">
                       {Array.from({ length: 5 }).map((_, starIndex) => (
                         <span key={starIndex} className="text-[#DBC18D]">
                           ★
