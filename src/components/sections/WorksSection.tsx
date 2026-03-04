@@ -16,8 +16,9 @@ const works = [
     href: "https://www.figma.com/proto/BdedKdxbrrpM26Wp9fDId2/Grass-Merkur-Recruiting?node-id=1-50&t=B6Hx3v7xJwcvnGi7-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1"
   },
   {
-    title: "KI-Support-Framework für Lift-&-Shift-Projekte",
-    image: "/assets/sections/works/ki-framework.png"
+    title: "leadgenerierung mit KI-Tools",
+    image: "/assets/sections/works/ki-framework.png",
+    href: "http://leadgen.five-s.de/"
   },
   {
     title: "Jährlicher Trust-Report für kritische IT-Infrastruktur",
