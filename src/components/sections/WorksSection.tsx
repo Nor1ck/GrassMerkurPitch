@@ -6,7 +6,8 @@ import { Section } from "@/components/layout/Section";
 
 const works = [
   {
-    title: "Redaktionsplanung",
+    title: "Social Media Board",
+    description: "Strategische Content-Planung",
     image: "/assets/sections/works/Image20260302152602.png",
     href: "https://trello.com/b/f6oeLRwE/grass-merkur-social-media"
   },
