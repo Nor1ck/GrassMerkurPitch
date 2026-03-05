@@ -13,11 +13,13 @@ const works = [
   },
   {
     title: "TalentRadar",
+    description: "Personalgewinnung mit System",
     image: "/assets/sections/works/talent-radar.png",
     href: "https://www.figma.com/proto/BdedKdxbrrpM26Wp9fDId2/Grass-Merkur-Recruiting?node-id=1-50&t=B6Hx3v7xJwcvnGi7-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1"
   },
   {
-    title: "Leadgenerierung mit KI-Tools",
+    title: "Artificial Intelligence",
+    description: "Leadgenerierung mit KI Tools",
     image: "/assets/sections/works/ki-framework.png",
     href: "http://leadgen.five-s.de/"
   },
