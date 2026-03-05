@@ -64,8 +64,7 @@ const roadmapCards = [
       "Priorisierung der Tools für die Module S2 & S3",
       "Definition der ersten Umsetzungsfelder",
       "Budget- & Ressourcenplanung",
-      "24-Monats-Wachstumsfahrplan",
-      "Auftragsvergabe"
+      "24-Monats-Wachstumsfahrplan"
     ]
   }
 ];
